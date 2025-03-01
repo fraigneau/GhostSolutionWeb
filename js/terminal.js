@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Éléments DOM
+    // DOM Elements
     const toggleTerminalBtn = document.getElementById('toggleTerminal');
     const closeTerminalBtn = document.getElementById('closeTerminal');
     const hackerTerminal = document.getElementById('hackerTerminal');
@@ -10,32 +10,32 @@ document.addEventListener('DOMContentLoaded', function() {
     const terminalSuccessSound = document.getElementById('terminalSuccessSound');
     
     // Variables
-    let soundEnabled = false; // Sera synchronisé avec le bouton de son principal
+    let soundEnabled = false; // Will be synchronized with the main sound button
     let commandHistory = [];
     let historyIndex = -1;
     let terminalActive = false;
     
-    // Vérifier si les éléments existent
+    // Check if elements exist
     if (!toggleTerminalBtn || !hackerTerminal || !terminalInput || !terminalOutput) {
-        console.error('Éléments du terminal non trouvés');
+        console.error('Terminal elements not found');
         return;
     }
     
-    // Initialisation
+    // Initialization
     init();
     
     function init() {
-        // Ajouter les écouteurs d'événements
+        // Add event listeners
         toggleTerminalBtn.addEventListener('click', toggleTerminal);
         closeTerminalBtn.addEventListener('click', closeTerminal);
         terminalInput.addEventListener('keydown', handleTerminalInput);
         
-        // Synchroniser l'état du son avec le bouton principal
+        // Synchronize sound state with main button
         const mainSoundButton = document.getElementById('toggleSound');
         if (mainSoundButton) {
             soundEnabled = mainSoundButton.classList.contains('sound-on');
             
-            // Observer les changements sur le bouton de son principal
+            // Observe changes on the main sound button
             const observer = new MutationObserver(function(mutations) {
                 mutations.forEach(function(mutation) {
                     if (mutation.attributeName === 'class') {
@@ -46,9 +46,20 @@ document.addEventListener('DOMContentLoaded', function() {
             
             observer.observe(mainSoundButton, { attributes: true });
         }
+        
+        // Add MutationObserver to automatically scroll when terminal content changes
+        const terminalObserver = new MutationObserver(function(mutations) {
+            scrollToBottom();
+        });
+        
+        terminalObserver.observe(terminalOutput, { 
+            childList: true,      // observe direct children
+            subtree: true,        // and lower descendants too
+            characterData: true   // observe changes to text content
+        });
     }
     
-    // Fonction pour activer/désactiver le terminal
+    // Function to toggle terminal
     function toggleTerminal() {
         if (terminalActive) {
             closeTerminal();
@@ -57,59 +68,82 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Fonction pour ouvrir le terminal
+    // Function to open terminal
     function openTerminal() {
         hackerTerminal.classList.add('active');
         toggleTerminalBtn.classList.add('active');
         terminalActive = true;
         terminalInput.focus();
         
-        // Afficher le message de bienvenue
+        // Display welcome message
         if (terminalOutput.children.length === 0) {
             displayWelcomeMessage();
         }
+        
+        // Ensure terminal is scrolled to bottom when opened
+        initTerminalScroll();
     }
     
-    // Fonction pour fermer le terminal
+    // Function to initialize terminal scroll behavior
+    function initTerminalScroll() {
+        // Force scroll to bottom
+        scrollToBottom();
+        
+        // Add a click event to the terminal to focus the input
+        hackerTerminal.addEventListener('click', function(e) {
+            // Only focus if not clicking on a button or input
+            if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') {
+                terminalInput.focus();
+            }
+        });
+        
+        // Ensure terminal is scrollable
+        terminalOutput.style.overflowY = 'auto';
+        
+        // Log for debugging
+        console.log('Terminal scroll initialized, height:', terminalOutput.scrollHeight);
+    }
+    
+    // Function to close terminal
     function closeTerminal() {
         hackerTerminal.classList.remove('active');
         toggleTerminalBtn.classList.remove('active');
         terminalActive = false;
     }
     
-    // Fonction pour gérer les entrées du terminal
+    // Function to handle terminal inputs
     function handleTerminalInput(e) {
-        // Jouer le son de frappe
+        // Play typing sound
         if (soundEnabled && terminalSound) {
             const soundClone = terminalSound.cloneNode();
             soundClone.volume = 0.3;
-            soundClone.play().catch(err => console.error('Erreur lors de la lecture du son:', err));
+            soundClone.play().catch(err => console.error('Error playing sound:', err));
         }
         
-        // Gérer les touches spéciales
+        // Handle special keys
         if (e.key === 'Enter') {
             e.preventDefault();
             const command = terminalInput.value.trim();
             
             if (command) {
-                // Ajouter la commande à l'historique
+                // Add command to history
                 commandHistory.push(command);
                 historyIndex = commandHistory.length;
                 
-                // Afficher la commande dans le terminal
+                // Display command in terminal
                 const commandElement = document.createElement('p');
                 commandElement.classList.add('command');
                 commandElement.textContent = command;
                 terminalOutput.appendChild(commandElement);
                 
-                // Exécuter la commande
+                // Execute command
                 executeCommand(command);
                 
-                // Effacer l'entrée
+                // Clear input
                 terminalInput.value = '';
                 
-                // Faire défiler vers le bas
-                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                // Scroll to bottom
+                scrollToBottom();
             }
         } else if (e.key === 'ArrowUp') {
             e.preventDefault();
@@ -132,7 +166,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Fonction pour exécuter une commande
+    // Function to ensure terminal always scrolls to the bottom when new content is added
+    function scrollToBottom() {
+        // Use requestAnimationFrame to ensure the scroll happens after the DOM has been updated
+        requestAnimationFrame(() => {
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            
+            // Double-check the scroll position after a short delay
+            // This helps with certain browsers and when content includes images or other resources
+            setTimeout(() => {
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            }, 10);
+        });
+    }
+    
+    // Function to execute a command
     function executeCommand(command) {
         const cmd = command.toLowerCase();
         const args = cmd.split(' ').filter(arg => arg.trim() !== '');
@@ -181,12 +229,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 closeTerminal();
                 break;
             default:
-                displayError(`Commande non reconnue: ${mainCommand}. Tapez 'help' pour voir les commandes disponibles.`);
+                displayError(`Command not recognized: ${mainCommand}. Type 'help' to see available commands.`);
                 playErrorSound();
         }
     }
     
-    // Fonction pour l'autocomplétion des commandes
+    // Function for command autocompletion
     function autocompleteCommand() {
         const input = terminalInput.value.toLowerCase();
         const commands = ['help', 'clear', 'about', 'services', 'contact', 'hack', 'matrix', 'scan', 'ls', 'dir', 'cat', 'whoami', 'exit'];
@@ -197,10 +245,11 @@ document.addEventListener('DOMContentLoaded', function() {
             terminalInput.value = matches[0];
         } else if (matches.length > 1) {
             displayResult(matches.join('  '));
+            scrollToBottom();
         }
     }
     
-    // Fonctions d'affichage
+    // Display functions
     function displayWelcomeMessage() {
         const asciiArt = `
   ██████╗ ██╗  ██╗ ██████╗ ███████╗████████╗███████╗ ██████╗ ██╗     ██╗   ██╗████████╗██╗ ██████╗ ███╗   ██╗
@@ -216,34 +265,37 @@ document.addEventListener('DOMContentLoaded', function() {
         asciiElement.textContent = asciiArt;
         terminalOutput.appendChild(asciiElement);
         
-        displayInfo('Bienvenue dans le terminal GhostSolution v1.0');
-        displayInfo('Tapez "help" pour voir les commandes disponibles.');
+        displayInfo('Welcome to GhostSolution Terminal v1.0');
+        displayInfo('Type "help" to see available commands.');
         
-        // Jouer le son de succès
+        // Play success sound
         playSuccessSound();
+        
+        // Scroll to bottom
+        scrollToBottom();
     }
     
     function displayHelp() {
         const helpText = [
-            { command: 'help', description: 'Affiche cette aide' },
-            { command: 'clear', description: 'Efface le terminal' },
-            { command: 'about', description: 'À propos de GhostSolution' },
-            { command: 'services', description: 'Affiche nos services' },
-            { command: 'contact', description: 'Affiche les informations de contact' },
-            { command: 'hack <cible>', description: 'Simule un hack (essayez avec "website", "database", "network")' },
-            { command: 'matrix', description: 'Affiche une animation Matrix' },
-            { command: 'scan <cible>', description: 'Simule un scan de sécurité' },
-            { command: 'ls / dir', description: 'Liste les fichiers' },
-            { command: 'cat <fichier>', description: 'Affiche le contenu d\'un fichier' },
-            { command: 'whoami', description: 'Affiche l\'utilisateur actuel' },
-            { command: 'exit', description: 'Ferme le terminal' }
+            { command: 'help', description: 'Display this help' },
+            { command: 'clear', description: 'Clear the terminal' },
+            { command: 'about', description: 'About GhostSolution' },
+            { command: 'services', description: 'Display our services' },
+            { command: 'contact', description: 'Display contact information' },
+            { command: 'hack <target>', description: 'Simulate a hack (try with "website", "database", "network")' },
+            { command: 'matrix', description: 'Display a Matrix animation' },
+            { command: 'scan <target>', description: 'Simulate a security scan' },
+            { command: 'ls / dir', description: 'List files' },
+            { command: 'cat <file>', description: 'Display file content' },
+            { command: 'whoami', description: 'Display current user' },
+            { command: 'exit', description: 'Close the terminal' }
         ];
         
         const helpElement = document.createElement('div');
         helpElement.classList.add('result');
         
         const helpTitle = document.createElement('p');
-        helpTitle.innerHTML = '<span class="info">Commandes disponibles:</span>';
+        helpTitle.innerHTML = '<span class="info">Available commands:</span>';
         helpElement.appendChild(helpTitle);
         
         const commandTable = document.createElement('table');
@@ -274,6 +326,7 @@ document.addEventListener('DOMContentLoaded', function() {
         terminalOutput.appendChild(helpElement);
         
         playSuccessSound();
+        scrollToBottom();
     }
     
     function clearTerminal() {
@@ -286,14 +339,15 @@ document.addEventListener('DOMContentLoaded', function() {
         aboutElement.classList.add('result');
         
         aboutElement.innerHTML = `
-            <p><span class="info">À propos de GhostSolution:</span></p>
-            <p>GhostSolution est une entreprise spécialisée en cybersécurité, offrant des services d'audit de sécurité, de forensique numérique et de rétro-ingénierie.</p>
-            <p>Notre équipe d'experts travaille pour protéger vos données sensibles et renforcer votre infrastructure contre les menaces modernes.</p>
-            <p>Fondée en 2023, notre mission est de rendre le monde numérique plus sûr pour tous.</p>
+            <p><span class="info">About GhostSolution:</span></p>
+            <p>GhostSolution is a company specialized in cybersecurity, offering security audit services, digital forensics, and reverse engineering.</p>
+            <p>Our team of experts works to protect your sensitive data and strengthen your infrastructure against modern threats.</p>
+            <p>Founded in 2023, our mission is to make the digital world safer for everyone.</p>
         `;
         
         terminalOutput.appendChild(aboutElement);
         playSuccessSound();
+        scrollToBottom();
     }
     
     function displayServices() {
@@ -301,14 +355,15 @@ document.addEventListener('DOMContentLoaded', function() {
         servicesElement.classList.add('result');
         
         servicesElement.innerHTML = `
-            <p><span class="info">Nos services:</span></p>
-            <p><span class="success">1. Audit de sécurité avancé</span> - Tests d'intrusion et évaluation des vulnérabilités</p>
-            <p><span class="success">2. Forensique numérique</span> - Investigation numérique et analyse d'incidents</p>
-            <p><span class="success">3. Rétro-ingénierie</span> - Analyse de logiciels malveillants et recherche de vulnérabilités</p>
+            <p><span class="info">Our services:</span></p>
+            <p><span class="success">1. Advanced Security Audit</span> - Penetration testing and vulnerability assessment</p>
+            <p><span class="success">2. Digital Forensics</span> - Digital investigation and incident analysis</p>
+            <p><span class="success">3. Reverse Engineering</span> - Malware analysis and vulnerability research</p>
         `;
         
         terminalOutput.appendChild(servicesElement);
         playSuccessSound();
+        scrollToBottom();
     }
     
     function displayContact() {
@@ -317,64 +372,96 @@ document.addEventListener('DOMContentLoaded', function() {
         
         contactElement.innerHTML = `
             <p><span class="info">Contact:</span></p>
-            <p>Email: <span class="success">contact@ghostsolution.com</span></p>
-            <p>Téléphone: <span class="success">+33 1 23 45 67 89</span></p>
-            <p>Adresse: <span class="success">42 Rue de la Cybersécurité, 75001 Paris, France</span></p>
+            <p>Email: <span class="success">anonymous@protonmail.com</span></p>
+            <p>Phone: <span class="success">1-800-H4CK-L33T</span></p>
+            <p>Address: <span class="success">Somewhere in the darknet...</span></p>
         `;
         
         terminalOutput.appendChild(contactElement);
         playSuccessSound();
+        scrollToBottom();
     }
     
     function simulateHack(target) {
         if (!target) {
-            displayError('Cible non spécifiée. Usage: hack <cible>');
+            displayError('Please specify a target to hack. Example: hack website');
             playErrorSound();
+            scrollToBottom();
             return;
         }
         
-        const validTargets = ['website', 'database', 'network', 'system'];
-        
-        if (!validTargets.includes(target)) {
-            displayError(`Cible invalide: ${target}. Cibles valides: ${validTargets.join(', ')}`);
-            playErrorSound();
-            return;
-        }
-        
-        // Simuler un hack avec une animation de texte
         const hackElement = document.createElement('div');
         hackElement.classList.add('result');
         
-        const steps = [
-            `Initialisation du hack sur ${target}...`,
-            `Analyse des vulnérabilités...`,
-            `Exploitation des failles de sécurité...`,
-            `Contournement des pare-feu...`,
-            `Élévation des privilèges...`,
-            `Extraction des données...`,
-            `Effacement des traces...`
-        ];
+        switch (target.toLowerCase()) {
+            case 'website':
+                simulateHackProcess(hackElement, 'Website', [
+                    'Scanning target website...',
+                    'Identifying vulnerabilities...',
+                    'Exploiting XSS vulnerability...',
+                    'Bypassing WAF...',
+                    'Accessing admin panel...',
+                    'Extracting database credentials...',
+                    'Downloading sensitive data...',
+                    'Covering tracks...'
+                ]);
+                break;
+            case 'database':
+                simulateHackProcess(hackElement, 'Database', [
+                    'Scanning database ports...',
+                    'Testing default credentials...',
+                    'Exploiting SQL injection...',
+                    'Escalating privileges...',
+                    'Dumping user tables...',
+                    'Extracting hashed passwords...',
+                    'Cracking password hashes...',
+                    'Establishing persistent access...'
+                ]);
+                break;
+            case 'network':
+                simulateHackProcess(hackElement, 'Network', [
+                    'Scanning network topology...',
+                    'Identifying vulnerable devices...',
+                    'Exploiting router vulnerability...',
+                    'Performing ARP poisoning...',
+                    'Intercepting network traffic...',
+                    'Capturing authentication tokens...',
+                    'Establishing backdoor...',
+                    'Covering tracks...'
+                ]);
+                break;
+            default:
+                hackElement.innerHTML = `
+                    <p><span class="error">Unknown target: ${target}</span></p>
+                    <p>Try with: website, database, or network</p>
+                `;
+                terminalOutput.appendChild(hackElement);
+                playErrorSound();
+                scrollToBottom();
+                return;
+        }
         
         terminalOutput.appendChild(hackElement);
+    }
+    
+    function simulateHackProcess(element, targetName, steps) {
+        element.innerHTML = `<p><span class="info">Initiating hack on ${targetName}...</span></p>`;
+        scrollToBottom();
         
-        // Afficher les étapes une par une
         let i = 0;
         const interval = setInterval(() => {
             if (i < steps.length) {
                 const stepElement = document.createElement('p');
-                stepElement.innerHTML = `<span class="info">[${Math.floor(Math.random() * 100)}%]</span> ${steps[i]}`;
-                hackElement.appendChild(stepElement);
-                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                stepElement.textContent = steps[i];
+                element.appendChild(stepElement);
+                scrollToBottom();
                 i++;
             } else {
                 clearInterval(interval);
-                
-                // Afficher le résultat final
-                const resultElement = document.createElement('p');
-                resultElement.innerHTML = `<span class="success">[100%] Hack réussi sur ${target}!</span>`;
-                hackElement.appendChild(resultElement);
-                terminalOutput.scrollTop = terminalOutput.scrollHeight;
-                
+                const completionElement = document.createElement('p');
+                completionElement.innerHTML = `<span class="success">${targetName} hack completed successfully!</span>`;
+                element.appendChild(completionElement);
+                scrollToBottom();
                 playSuccessSound();
             }
         }, 500);
@@ -384,93 +471,177 @@ document.addEventListener('DOMContentLoaded', function() {
         const matrixElement = document.createElement('div');
         matrixElement.classList.add('result');
         
-        // Générer une matrice aléatoire de caractères
-        const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789';
-        let matrix = '';
+        const matrixContainer = document.createElement('div');
+        matrixContainer.style.fontFamily = 'monospace';
+        matrixContainer.style.color = '#00ff00';
+        matrixContainer.style.textShadow = '0 0 5px #00ff00';
+        matrixContainer.style.lineHeight = '1.2';
+        matrixContainer.style.height = '200px';
+        matrixContainer.style.overflow = 'hidden';
+        matrixContainer.style.position = 'relative';
         
-        for (let i = 0; i < 10; i++) {
-            let line = '';
-            for (let j = 0; j < 50; j++) {
-                line += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            matrix += line + '\n';
+        matrixElement.appendChild(matrixContainer);
+        terminalOutput.appendChild(matrixElement);
+        scrollToBottom();
+        
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789$&+,:;=?@#|\'<>.^*()%!-';
+        const width = Math.floor(matrixContainer.offsetWidth / 10);
+        const drops = [];
+        
+        for (let i = 0; i < width; i++) {
+            drops[i] = Math.floor(Math.random() * 100);
         }
         
-        const matrixArt = document.createElement('pre');
-        matrixArt.classList.add('ascii-art');
-        matrixArt.textContent = matrix;
-        matrixElement.appendChild(matrixArt);
+        let frameCount = 0;
+        const maxFrames = 200; // Limit animation to prevent performance issues
         
-        terminalOutput.appendChild(matrixElement);
+        const draw = () => {
+            if (frameCount >= maxFrames) {
+                return;
+            }
+            
+            frameCount++;
+            
+            let matrixText = '';
+            
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                matrixText += text;
+            }
+            
+            const line = document.createElement('div');
+            line.textContent = matrixText;
+            line.style.textAlign = 'center';
+            
+            if (matrixContainer.childNodes.length >= 20) {
+                matrixContainer.removeChild(matrixContainer.firstChild);
+            }
+            
+            matrixContainer.appendChild(line);
+            scrollToBottom();
+            
+            requestAnimationFrame(draw);
+        };
+        
+        draw();
         playSuccessSound();
     }
     
     function simulateScan(target) {
         if (!target) {
-            displayError('Cible non spécifiée. Usage: scan <cible>');
+            displayError('Please specify a target to scan. Example: scan website');
             playErrorSound();
+            scrollToBottom();
             return;
         }
         
         const scanElement = document.createElement('div');
         scanElement.classList.add('result');
         
-        const scanHeader = document.createElement('p');
-        scanHeader.innerHTML = `<span class="info">Scan de sécurité de ${target} en cours...</span>`;
-        scanElement.appendChild(scanHeader);
+        switch (target.toLowerCase()) {
+            case 'website':
+                simulateScanProcess(scanElement, 'Website', [
+                    'Performing DNS enumeration...',
+                    'Checking HTTP headers...',
+                    'Scanning for open ports...',
+                    'Identifying web technologies...',
+                    'Testing for common vulnerabilities...',
+                    'Checking SSL/TLS configuration...',
+                    'Scanning for outdated components...',
+                    'Generating security report...'
+                ], [
+                    'Outdated WordPress version detected',
+                    'Weak SSL configuration found',
+                    'Directory listing enabled',
+                    'Missing security headers'
+                ]);
+                break;
+            case 'network':
+                simulateScanProcess(scanElement, 'Network', [
+                    'Performing network discovery...',
+                    'Identifying active hosts...',
+                    'Scanning for open ports...',
+                    'Fingerprinting operating systems...',
+                    'Checking for vulnerable services...',
+                    'Testing firewall rules...',
+                    'Analyzing network traffic...',
+                    'Generating security report...'
+                ], [
+                    'Unpatched router firmware detected',
+                    'Weak wireless encryption',
+                    'Multiple open ports on critical servers',
+                    'Outdated network protocols in use'
+                ]);
+                break;
+            case 'system':
+                simulateScanProcess(scanElement, 'System', [
+                    'Checking operating system version...',
+                    'Scanning for installed software...',
+                    'Identifying running services...',
+                    'Checking user permissions...',
+                    'Testing for missing patches...',
+                    'Analyzing security configurations...',
+                    'Checking for malware indicators...',
+                    'Generating security report...'
+                ], [
+                    'Multiple outdated software packages',
+                    'Unnecessary services running',
+                    'Weak user password policies',
+                    'Missing critical security patches'
+                ]);
+                break;
+            default:
+                scanElement.innerHTML = `
+                    <p><span class="error">Unknown target: ${target}</span></p>
+                    <p>Try with: website, network, or system</p>
+                `;
+                terminalOutput.appendChild(scanElement);
+                playErrorSound();
+                scrollToBottom();
+                return;
+        }
         
         terminalOutput.appendChild(scanElement);
+    }
+    
+    function simulateScanProcess(element, targetName, steps, findings) {
+        element.innerHTML = `<p><span class="info">Initiating security scan on ${targetName}...</span></p>`;
+        scrollToBottom();
         
-        // Simuler un scan avec des résultats aléatoires
-        setTimeout(() => {
-            const vulnerabilities = [
-                { severity: 'high', name: 'SQL Injection', description: 'Vulnérabilité permettant l\'injection de code SQL' },
-                { severity: 'medium', name: 'Cross-Site Scripting (XSS)', description: 'Vulnérabilité permettant l\'injection de scripts' },
-                { severity: 'low', name: 'Outdated SSL Certificate', description: 'Certificat SSL expiré ou obsolète' },
-                { severity: 'high', name: 'Remote Code Execution', description: 'Vulnérabilité permettant l\'exécution de code à distance' },
-                { severity: 'medium', name: 'Insecure Authentication', description: 'Mécanisme d\'authentification faible' }
-            ];
-            
-            // Sélectionner aléatoirement 1 à 3 vulnérabilités
-            const numVulnerabilities = Math.floor(Math.random() * 3) + 1;
-            const selectedVulnerabilities = [];
-            
-            for (let i = 0; i < numVulnerabilities; i++) {
-                const randomIndex = Math.floor(Math.random() * vulnerabilities.length);
-                selectedVulnerabilities.push(vulnerabilities[randomIndex]);
-                vulnerabilities.splice(randomIndex, 1);
+        let i = 0;
+        const interval = setInterval(() => {
+            if (i < steps.length) {
+                const stepElement = document.createElement('p');
+                stepElement.textContent = steps[i];
+                element.appendChild(stepElement);
+                scrollToBottom();
+                i++;
+            } else {
+                clearInterval(interval);
                 
-                if (vulnerabilities.length === 0) break;
+                const completionElement = document.createElement('p');
+                completionElement.innerHTML = `<span class="success">${targetName} security scan completed!</span>`;
+                element.appendChild(completionElement);
+                
+                const findingsElement = document.createElement('div');
+                findingsElement.innerHTML = `<p><span class="warning">Security issues found:</span></p>`;
+                
+                findings.forEach(finding => {
+                    const findingElement = document.createElement('p');
+                    findingElement.innerHTML = `<span class="warning">- ${finding}</span>`;
+                    findingsElement.appendChild(findingElement);
+                });
+                
+                element.appendChild(findingsElement);
+                
+                const recommendationElement = document.createElement('p');
+                recommendationElement.innerHTML = `<span class="info">Recommendation: Contact GhostSolution for a detailed security assessment.</span>`;
+                element.appendChild(recommendationElement);
+                
+                scrollToBottom();
+                playSuccessSound();
             }
-            
-            // Afficher les résultats
-            const resultsHeader = document.createElement('p');
-            resultsHeader.innerHTML = `<span class="info">Scan terminé. ${selectedVulnerabilities.length} vulnérabilités trouvées:</span>`;
-            scanElement.appendChild(resultsHeader);
-            
-            selectedVulnerabilities.forEach(vuln => {
-                const vulnElement = document.createElement('p');
-                let severityClass = '';
-                
-                switch (vuln.severity) {
-                    case 'high':
-                        severityClass = 'error';
-                        break;
-                    case 'medium':
-                        severityClass = 'warning';
-                        break;
-                    case 'low':
-                        severityClass = 'info';
-                        break;
-                }
-                
-                vulnElement.innerHTML = `<span class="${severityClass}">[${vuln.severity.toUpperCase()}]</span> ${vuln.name}: ${vuln.description}`;
-                scanElement.appendChild(vulnElement);
-            });
-            
-            terminalOutput.scrollTop = terminalOutput.scrollHeight;
-            playSuccessSound();
-        }, 2000);
+        }, 500);
     }
     
     function listDirectory() {
@@ -478,18 +649,19 @@ document.addEventListener('DOMContentLoaded', function() {
         dirElement.classList.add('result');
         
         dirElement.innerHTML = `
-            <p><span class="info">Contenu du répertoire:</span></p>
-            <p>drwxr-xr-x  2 ghost ghost 4096 Jan 1 2023 <span class="info">services/</span></p>
-            <p>drwxr-xr-x  2 ghost ghost 4096 Jan 1 2023 <span class="info">clients/</span></p>
-            <p>drwxr-xr-x  2 ghost ghost 4096 Jan 1 2023 <span class="info">projects/</span></p>
-            <p>-rw-r--r--  1 ghost ghost 2048 Jan 1 2023 <span class="success">about.txt</span></p>
-            <p>-rw-r--r--  1 ghost ghost 3072 Jan 1 2023 <span class="success">services.txt</span></p>
-            <p>-rw-r--r--  1 ghost ghost 1024 Jan 1 2023 <span class="success">contact.txt</span></p>
-            <p>-rw-------  1 ghost ghost 4096 Jan 1 2023 <span class="error">secret.txt</span></p>
+            <p><span class="info">Directory listing:</span></p>
+            <p><span style="color: var(--accent-color);">drwxr-xr-x</span> system/</p>
+            <p><span style="color: var(--accent-color);">drwxr-xr-x</span> logs/</p>
+            <p><span style="color: var(--accent-color);">drwxr-xr-x</span> data/</p>
+            <p><span style="color: var(--secondary-color);">-rw-r--r--</span> about.txt</p>
+            <p><span style="color: var(--secondary-color);">-rw-r--r--</span> services.txt</p>
+            <p><span style="color: var(--secondary-color);">-rw-r--r--</span> contact.txt</p>
+            <p><span style="color: var(--danger-color);">-rw-------</span> secret.txt</p>
         `;
         
         terminalOutput.appendChild(dirElement);
         playSuccessSound();
+        scrollToBottom();
     }
     
     function catFile(filename) {
@@ -499,36 +671,36 @@ document.addEventListener('DOMContentLoaded', function() {
         switch (filename.toLowerCase()) {
             case 'about.txt':
                 fileElement.innerHTML = `
-                    <p><span class="info">Contenu de about.txt:</span></p>
-                    <p>GhostSolution est une entreprise spécialisée en cybersécurité, offrant des services d'audit de sécurité, de forensique numérique et de rétro-ingénierie.</p>
-                    <p>Notre équipe d'experts travaille pour protéger vos données sensibles et renforcer votre infrastructure contre les menaces modernes.</p>
+                    <p><span class="info">Content of about.txt:</span></p>
+                    <p>GhostSolution is a company specialized in cybersecurity, offering security audit services, digital forensics, and reverse engineering.</p>
+                    <p>Our team of experts works to protect your sensitive data and strengthen your infrastructure against modern threats.</p>
                 `;
                 break;
             case 'services.txt':
                 fileElement.innerHTML = `
-                    <p><span class="info">Contenu de services.txt:</span></p>
-                    <p>1. Audit de sécurité avancé - Tests d'intrusion et évaluation des vulnérabilités</p>
-                    <p>2. Forensique numérique - Investigation numérique et analyse d'incidents</p>
-                    <p>3. Rétro-ingénierie - Analyse de logiciels malveillants et recherche de vulnérabilités</p>
+                    <p><span class="info">Content of services.txt:</span></p>
+                    <p>1. Advanced Security Audit - Penetration testing and vulnerability assessment</p>
+                    <p>2. Digital Forensics - Digital investigation and incident analysis</p>
+                    <p>3. Reverse Engineering - Malware analysis and vulnerability research</p>
                 `;
                 break;
             case 'contact.txt':
                 fileElement.innerHTML = `
-                    <p><span class="info">Contenu de contact.txt:</span></p>
-                    <p>Email: contact@ghostsolution.com</p>
-                    <p>Téléphone: +33 1 23 45 67 89</p>
-                    <p>Adresse: 42 Rue de la Cybersécurité, 75001 Paris, France</p>
+                    <p><span class="info">Content of contact.txt:</span></p>
+                    <p>Email: anonymous@protonmail.com</p>
+                    <p>Phone: 1-800-H4CK-L33T</p>
+                    <p>Address: Somewhere in the darknet...</p>
                 `;
                 break;
             case 'secret.txt':
                 fileElement.innerHTML = `
-                    <p><span class="error">Accès refusé: Vous n'avez pas les permissions nécessaires pour lire ce fichier.</span></p>
+                    <p><span class="error">Access denied: You don't have the necessary permissions to read this file.</span></p>
                 `;
                 playErrorSound();
                 break;
             default:
                 fileElement.innerHTML = `
-                    <p><span class="error">Erreur: Le fichier '${filename}' n'existe pas.</span></p>
+                    <p><span class="error">Error: File '${filename}' does not exist.</span></p>
                 `;
                 playErrorSound();
                 break;
@@ -538,6 +710,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (filename.toLowerCase() !== 'secret.txt' && ['about.txt', 'services.txt', 'contact.txt'].includes(filename.toLowerCase())) {
             playSuccessSound();
         }
+        scrollToBottom();
     }
     
     function displayWhoami() {
@@ -545,21 +718,23 @@ document.addEventListener('DOMContentLoaded', function() {
         whoamiElement.classList.add('result');
         
         whoamiElement.innerHTML = `
-            <p>visiteur@ghostsolution.com</p>
-            <p>Rôle: Invité</p>
-            <p>Permissions: Lecture seule</p>
+            <p>visitor@ghostsolution.com</p>
+            <p>Role: Guest</p>
+            <p>Permissions: Read-only</p>
         `;
         
         terminalOutput.appendChild(whoamiElement);
         playSuccessSound();
+        scrollToBottom();
     }
     
-    // Fonctions utilitaires
+    // Utility functions
     function displayResult(text) {
         const resultElement = document.createElement('p');
         resultElement.classList.add('result');
         resultElement.textContent = text;
         terminalOutput.appendChild(resultElement);
+        scrollToBottom();
     }
     
     function displayError(text) {
@@ -567,6 +742,7 @@ document.addEventListener('DOMContentLoaded', function() {
         errorElement.classList.add('error');
         errorElement.textContent = text;
         terminalOutput.appendChild(errorElement);
+        scrollToBottom();
     }
     
     function displayInfo(text) {
@@ -574,21 +750,20 @@ document.addEventListener('DOMContentLoaded', function() {
         infoElement.classList.add('info');
         infoElement.textContent = text;
         terminalOutput.appendChild(infoElement);
-    }
-    
-    function playSuccessSound() {
-        if (soundEnabled && terminalSuccessSound) {
-            const soundClone = terminalSuccessSound.cloneNode();
-            soundClone.volume = 0.5;
-            soundClone.play().catch(err => console.error('Erreur lors de la lecture du son:', err));
-        }
+        scrollToBottom();
     }
     
     function playErrorSound() {
         if (soundEnabled && terminalErrorSound) {
-            const soundClone = terminalErrorSound.cloneNode();
-            soundClone.volume = 0.5;
-            soundClone.play().catch(err => console.error('Erreur lors de la lecture du son:', err));
+            terminalErrorSound.currentTime = 0;
+            terminalErrorSound.play().catch(err => console.error('Error playing sound:', err));
+        }
+    }
+    
+    function playSuccessSound() {
+        if (soundEnabled && terminalSuccessSound) {
+            terminalSuccessSound.currentTime = 0;
+            terminalSuccessSound.play().catch(err => console.error('Error playing sound:', err));
         }
     }
 }); 

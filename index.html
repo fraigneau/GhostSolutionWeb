@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <meta name="description"
-        content="GhostSolution - Experts en cybersécurité et audits de sécurité pour protéger vos données sensibles">
+        content="GhostSolution - Cybersecurity experts and security audits to protect your sensitive data">
     <meta name="theme-color" content="#0f1624">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -13,28 +13,28 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/png" href="img/favicon.png">
-    <!-- Préchargement des polices pour améliorer les performances -->
+    <!-- Preloading fonts to improve performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 
 <body>
     <div class="sound-control">
-        <button id="toggleSound" class="sound-button" aria-label="Activer/désactiver le son">
+        <button id="toggleSound" class="sound-button" aria-label="Enable/disable sound">
             <i class="fas fa-volume-mute" aria-hidden="true"></i>
         </button>
     </div>
 
-    <!-- Nouveau bouton pour activer le mode terminal -->
+    <!-- New button to activate terminal mode -->
     <div class="terminal-control">
-        <button id="toggleTerminal" class="terminal-button" aria-label="Activer/désactiver le mode terminal">
+        <button id="toggleTerminal" class="terminal-button" aria-label="Enable/disable terminal mode">
             <i class="fas fa-terminal" aria-hidden="true"></i>
         </button>
     </div>
 
-    <!-- Nouveau bouton pour activer l'effet de glitch -->
+    <!-- New button to activate glitch effect -->
     <div class="glitch-control">
-        <button id="toggleGlitch" class="glitch-button" aria-label="Activer/désactiver l'effet de glitch">
+        <button id="toggleGlitch" class="glitch-button" aria-label="Enable/disable glitch effect">
             <i class="fas fa-bug" aria-hidden="true"></i>
         </button>
     </div>
@@ -43,7 +43,7 @@
     <div id="hackerTerminal" class="hacker-terminal">
         <div class="terminal-header">
             <div class="terminal-title">GhostSolution Terminal v1.0</div>
-            <button id="closeTerminal" class="terminal-close" aria-label="Fermer le terminal">
+            <button id="closeTerminal" class="terminal-close" aria-label="Close terminal">
                 <i class="fas fa-times"></i>
             </button>
         </div>
@@ -61,10 +61,10 @@
 
     <header>
         <div class="header-container">
-            <a href="#" class="logo" aria-label="GhostSolution Accueil">
+            <a href="#" class="logo" aria-label="GhostSolution Home">
                 <i class="fas fa-shield-alt logo-icon" aria-hidden="true"></i> GhostSolution
             </a>
-            <nav aria-label="Navigation principale" class="desktop-only">
+            <nav aria-label="Main navigation" class="desktop-only">
                 <ul id="navMenu">
                     <li><a href="#accueil" class="nav-link">HOME</a></li>
                     <li><a href="#services" class="nav-link">SERVICES</a></li>
@@ -250,7 +250,7 @@
     <audio id="clickSound">
         <source src="audio/click.mp3" type="audio/mpeg">
     </audio>
-    <!-- Nouveau son pour le terminal -->
+    <!-- New sound for terminal -->
     <audio id="terminalSound">
         <source src="audio/terminal-key.mp3" type="audio/mpeg">
     </audio>
@@ -260,7 +260,7 @@
     <audio id="terminalSuccessSound">
         <source src="audio/terminal-success.mp3" type="audio/mpeg">
     </audio>
-    <!-- Nouveau son pour l'effet de glitch -->
+    <!-- New sound for glitch effect -->
     <audio id="glitchSound">
         <source src="audio/glitch.mp3" type="audio/mpeg">
     </audio>
@@ -269,9 +269,9 @@
     <script src="js/config.local.js" onerror="console.log('No local configuration found')"></script>
     <script src="js/config.js"></script>
     <script src="js/main.js"></script>
-    <!-- Nouveau script pour le terminal -->
+    <!-- New script for terminal -->
     <script src="js/terminal.js"></script>
-    <!-- Nouveau script pour l'effet de glitch -->
+    <!-- New script for glitch effect -->
     <script src="js/glitch.js"></script>
 </body>
 

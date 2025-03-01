@@ -22,6 +22,9 @@
     --shadow-primary: 0 10px 30px rgba(0, 200, 255, 0.1);
     --shadow-card: 0 15px 25px rgba(0, 0, 0, 0.2);
     
+    /* Variable pour l'intensité de l'effet de glitch */
+    --glitch-opacity: 1;
+    
     /* Variables responsives pour les espacements et tailles */
     --padding-section: 100px 0;
     --padding-section-mobile: 60px 0;
@@ -1478,11 +1481,54 @@ footer {
 }
 
 .terminal-output {
-    flex: 1;
-    margin-bottom: 10px;
+    height: calc(100% - 60px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--text-color);
+    background-color: transparent;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) var(--bg-color-dark);
+    scroll-behavior: smooth;
+    word-wrap: break-word;
+    white-space: pre-wrap;
 }
 
+/* Custom scrollbar for terminal */
+.terminal-output::-webkit-scrollbar {
+    width: 8px;
+}
+
+.terminal-output::-webkit-scrollbar-track {
+    background: var(--bg-color-dark);
+}
+
+.terminal-output::-webkit-scrollbar-thumb {
+    background-color: var(--accent-color);
+    border-radius: 4px;
+}
+
+.terminal-output::-webkit-scrollbar-thumb:hover {
+    background-color: var(--secondary-color);
+}
+
+/* Ensure terminal content is properly displayed */
+.terminal-content {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 40px);
+    overflow: hidden;
+}
+
+/* Ensure terminal input stays at bottom */
 .terminal-input-line {
+    position: sticky;
+    bottom: 0;
+    background-color: var(--bg-color-dark);
+    padding: 10px;
     display: flex;
     align-items: center;
     margin-top: 5px;
@@ -1667,6 +1713,7 @@ footer {
     left: 0;
     width: 100%;
     height: 100%;
+    opacity: var(--glitch-opacity);
 }
 
 .glitch-active .glitch-text::before {
@@ -1674,6 +1721,7 @@ footer {
     text-shadow: -1px 0 var(--danger-color);
     clip: rect(44px, 450px, 56px, 0);
     animation: glitch-anim-1 5s linear infinite alternate-reverse;
+    animation-play-state: running;
 }
 
 .glitch-active .glitch-text::after {
@@ -1681,6 +1729,7 @@ footer {
     text-shadow: -1px 0 var(--accent-color);
     clip: rect(44px, 450px, 56px, 0);
     animation: glitch-anim-2 5s linear infinite alternate-reverse;
+    animation-play-state: running;
 }
 
 @keyframes glitch-anim-1 {
@@ -1760,6 +1809,7 @@ footer {
 .glitch-active .service-icon,
 .glitch-active .work-icon {
     animation: glitch-image 0.4s linear infinite;
+    animation-play-state: running;
 }
 
 @keyframes glitch-image {
@@ -1797,6 +1847,7 @@ footer {
     pointer-events: none;
     z-index: 9998;
     animation: glitch-bg 2s linear infinite;
+    opacity: calc(var(--glitch-opacity) * 0.8);
 }
 
 @keyframes glitch-bg {
@@ -1841,6 +1892,7 @@ footer {
     pointer-events: none;
     z-index: 9999;
     animation: glitch-scanline 4s linear infinite;
+    opacity: var(--glitch-opacity);
 }
 
 @keyframes glitch-scanline {
@@ -1858,6 +1910,7 @@ footer {
 .glitch-active .service-link,
 .glitch-active .work-link {
     animation: glitch-shake 0.3s linear infinite;
+    animation-play-state: running;
 }
 
 @keyframes glitch-shake {

@@ -1,15 +1,15 @@
-// Utiliser la configuration globale
-// Importer la configuration
+// Use global configuration
+// Import configuration
 // import config from './config.js';
 
 // Wait for DOM to be loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Utiliser la configuration globale
+    // Use global configuration
     const config = window.config || {};
-    console.log('Configuration chargée:', config);
+    console.log('Configuration loaded:', config);
     
-    // Vérifier si le document est complètement chargé
-    console.log('DOM chargé, initialisation des éléments...');
+    // Check if document is fully loaded
+    console.log('DOM loaded, initializing elements...');
     
     // DOM Elements   
     const soundButton = document.getElementById('toggleSound');
@@ -25,8 +25,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const workCard = document.querySelector('.work-card');
     const cursorFollower = document.querySelector('.cursor-follower');
     
-    // Vérifier les éléments critiques
-    console.log('Éléments DOM trouvés:', {
+    // Check critical elements
+    console.log('DOM elements found:', {
         soundButton: !!soundButton,
         backgroundMusic: !!backgroundMusic,
         discoverBtn: !!discoverBtn,
@@ -48,9 +48,9 @@ document.addEventListener('DOMContentLoaded', function() {
         initScrollAnimations();
         initMatrixBackground();
         initHeaderScroll();
-        console.log('Initialisation terminée avec succès');
+        console.log('Initialization completed successfully');
     } catch (error) {
-        console.error('Erreur lors de l\'initialisation:', error);
+        console.error('Error during initialization:', error);
     }
 
     // Function to initialize custom cursor (desktop only)
