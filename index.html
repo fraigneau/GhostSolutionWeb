@@ -25,6 +25,40 @@
         </button>
     </div>
 
+    <!-- Nouveau bouton pour activer le mode terminal -->
+    <div class="terminal-control">
+        <button id="toggleTerminal" class="terminal-button" aria-label="Activer/désactiver le mode terminal">
+            <i class="fas fa-terminal" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    <!-- Nouveau bouton pour activer l'effet de glitch -->
+    <div class="glitch-control">
+        <button id="toggleGlitch" class="glitch-button" aria-label="Activer/désactiver l'effet de glitch">
+            <i class="fas fa-bug" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    <!-- Terminal hacker overlay -->
+    <div id="hackerTerminal" class="hacker-terminal">
+        <div class="terminal-header">
+            <div class="terminal-title">GhostSolution Terminal v1.0</div>
+            <button id="closeTerminal" class="terminal-close" aria-label="Fermer le terminal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="terminal-content">
+            <div id="terminalOutput" class="terminal-output"></div>
+            <div class="terminal-input-line">
+                <span class="terminal-prompt">ghost@solution:~$</span>
+                <input type="text" id="terminalInput" class="terminal-input" autocomplete="off" spellcheck="false">
+            </div>
+        </div>
+        <div class="terminal-help">
+            <p>Type <span class="terminal-command">help</span> for available commands</p>
+        </div>
+    </div>
+
     <header>
         <div class="header-container">
             <a href="#" class="logo" aria-label="GhostSolution Accueil">
@@ -216,11 +250,29 @@
     <audio id="clickSound">
         <source src="audio/click.mp3" type="audio/mpeg">
     </audio>
+    <!-- Nouveau son pour le terminal -->
+    <audio id="terminalSound">
+        <source src="audio/terminal-key.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="terminalErrorSound">
+        <source src="audio/terminal-error.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="terminalSuccessSound">
+        <source src="audio/terminal-success.mp3" type="audio/mpeg">
+    </audio>
+    <!-- Nouveau son pour l'effet de glitch -->
+    <audio id="glitchSound">
+        <source src="audio/glitch.mp3" type="audio/mpeg">
+    </audio>
 
     <!-- Configuration and scripts -->
     <script src="js/config.local.js" onerror="console.log('No local configuration found')"></script>
     <script src="js/config.js"></script>
     <script src="js/main.js"></script>
+    <!-- Nouveau script pour le terminal -->
+    <script src="js/terminal.js"></script>
+    <!-- Nouveau script pour l'effet de glitch -->
+    <script src="js/glitch.js"></script>
 </body>
 
 </html>

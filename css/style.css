@@ -1352,4 +1352,528 @@ footer {
     font-size: 0.8rem;
     color: var(--text-color);
     letter-spacing: 1px;
+}
+
+/* Terminal Control Button Styles */
+.terminal-control {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    z-index: 1000;
+}
+
+.terminal-button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--dark-accent);
+    border: 2px solid var(--accent-color);
+    color: var(--text-color);
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.terminal-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    background: var(--light-bg);
+}
+
+.terminal-button.active {
+    background: var(--accent-color);
+    color: white;
+    animation: pulse 2s infinite;
+}
+
+@media (max-width: 480px) {
+    .terminal-control {
+        bottom: 20px;
+        left: 20px;
+    }
+    
+    .terminal-button {
+        width: 45px;
+        height: 45px;
+        font-size: 1rem;
+    }
+}
+
+/* Hacker Terminal Styles */
+.hacker-terminal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 80%;
+    max-width: 900px;
+    height: 70vh;
+    background-color: var(--terminal-bg);
+    border: 1px solid var(--terminal-border);
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+}
+
+.hacker-terminal.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.terminal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: rgba(26, 35, 51, 0.8);
+    border-bottom: 1px solid var(--terminal-border);
+}
+
+.terminal-title {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.terminal-close {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.terminal-close:hover {
+    color: var(--danger-color);
+}
+
+.terminal-content {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--terminal-text);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    background-color: var(--terminal-bg);
+    background-image: 
+        linear-gradient(rgba(18, 30, 48, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(18, 30, 48, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.terminal-output {
+    flex: 1;
+    margin-bottom: 10px;
+}
+
+.terminal-input-line {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.terminal-prompt {
+    color: var(--success-color);
+    margin-right: 8px;
+    font-weight: bold;
+}
+
+.terminal-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    outline: none;
+    caret-color: var(--accent-color);
+}
+
+.terminal-help {
+    padding: 10px 15px;
+    background-color: rgba(26, 35, 51, 0.5);
+    border-top: 1px solid var(--terminal-border);
+    font-size: 0.8rem;
+    color: rgba(230, 230, 230, 0.7);
+}
+
+.terminal-command {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+.terminal-output p {
+    margin: 5px 0;
+    word-break: break-word;
+}
+
+.terminal-output .error {
+    color: var(--danger-color);
+}
+
+.terminal-output .success {
+    color: var(--success-color);
+}
+
+.terminal-output .warning {
+    color: var(--warning-color);
+}
+
+.terminal-output .info {
+    color: var(--secondary-color);
+}
+
+.terminal-output .ascii-art {
+    color: var(--accent-color);
+    font-size: 0.7rem;
+    line-height: 1.2;
+    margin: 10px 0;
+    white-space: pre;
+}
+
+.terminal-output .command {
+    color: var(--text-color);
+    margin-bottom: 5px;
+}
+
+.terminal-output .command::before {
+    content: '$ ';
+    color: var(--success-color);
+}
+
+.terminal-output .result {
+    color: var(--terminal-text);
+    margin-bottom: 10px;
+}
+
+.terminal-output .typing {
+    border-right: 2px solid var(--accent-color);
+    animation: blink 1s step-end infinite;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+@keyframes terminalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.terminal-output p {
+    animation: terminalFadeIn 0.3s ease forwards;
+}
+
+@media (max-width: 768px) {
+    .hacker-terminal {
+        width: 90%;
+        height: 80vh;
+    }
+}
+
+@media (max-width: 480px) {
+    .hacker-terminal {
+        width: 95%;
+        height: 70vh;
+    }
+    
+    .terminal-title {
+        font-size: 0.8rem;
+    }
+    
+    .terminal-content {
+        font-size: 0.8rem;
+    }
+    
+    .terminal-input {
+        font-size: 0.8rem;
+    }
+}
+
+/* Glitch Effect Styles */
+.glitch-button {
+    position: fixed;
+    bottom: 30px;
+    right: 90px;
+    z-index: 1000;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--dark-accent);
+    border: 2px solid var(--danger-color);
+    color: var(--text-color);
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.glitch-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    background: var(--light-bg);
+}
+
+.glitch-button.active {
+    background: var(--danger-color);
+    color: white;
+    animation: pulse 2s infinite;
+}
+
+@media (max-width: 480px) {
+    .glitch-button {
+        bottom: 20px;
+        right: 80px;
+        width: 45px;
+        height: 45px;
+        font-size: 1rem;
+    }
+}
+
+/* Glitch Text Effect */
+.glitch-text {
+    position: relative;
+    display: inline-block;
+}
+
+.glitch-active .glitch-text::before,
+.glitch-active .glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glitch-active .glitch-text::before {
+    left: 2px;
+    text-shadow: -1px 0 var(--danger-color);
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim-1 5s linear infinite alternate-reverse;
+}
+
+.glitch-active .glitch-text::after {
+    left: -2px;
+    text-shadow: -1px 0 var(--accent-color);
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim-2 5s linear infinite alternate-reverse;
+}
+
+@keyframes glitch-anim-1 {
+    0% {
+        clip: rect(2px, 9999px, 28px, 0);
+    }
+    10% {
+        clip: rect(42px, 9999px, 73px, 0);
+    }
+    20% {
+        clip: rect(61px, 9999px, 78px, 0);
+    }
+    30% {
+        clip: rect(15px, 9999px, 13px, 0);
+    }
+    40% {
+        clip: rect(26px, 9999px, 48px, 0);
+    }
+    50% {
+        clip: rect(25px, 9999px, 52px, 0);
+    }
+    60% {
+        clip: rect(67px, 9999px, 92px, 0);
+    }
+    70% {
+        clip: rect(24px, 9999px, 13px, 0);
+    }
+    80% {
+        clip: rect(63px, 9999px, 91px, 0);
+    }
+    90% {
+        clip: rect(11px, 9999px, 82px, 0);
+    }
+    100% {
+        clip: rect(46px, 9999px, 33px, 0);
+    }
+}
+
+@keyframes glitch-anim-2 {
+    0% {
+        clip: rect(63px, 9999px, 63px, 0);
+    }
+    10% {
+        clip: rect(34px, 9999px, 15px, 0);
+    }
+    20% {
+        clip: rect(26px, 9999px, 62px, 0);
+    }
+    30% {
+        clip: rect(46px, 9999px, 78px, 0);
+    }
+    40% {
+        clip: rect(36px, 9999px, 27px, 0);
+    }
+    50% {
+        clip: rect(57px, 9999px, 86px, 0);
+    }
+    60% {
+        clip: rect(83px, 9999px, 91px, 0);
+    }
+    70% {
+        clip: rect(49px, 9999px, 51px, 0);
+    }
+    80% {
+        clip: rect(3px, 9999px, 27px, 0);
+    }
+    90% {
+        clip: rect(56px, 9999px, 17px, 0);
+    }
+    100% {
+        clip: rect(29px, 9999px, 84px, 0);
+    }
+}
+
+/* Glitch Image Effect */
+.glitch-active img,
+.glitch-active .service-icon,
+.glitch-active .work-icon {
+    animation: glitch-image 0.4s linear infinite;
+}
+
+@keyframes glitch-image {
+    0% {
+        transform: translate(0);
+        filter: hue-rotate(0deg);
+    }
+    25% {
+        transform: translate(1px, 1px);
+        filter: hue-rotate(90deg);
+    }
+    50% {
+        transform: translate(-1px, -1px);
+        filter: hue-rotate(180deg);
+    }
+    75% {
+        transform: translate(-1px, 1px);
+        filter: hue-rotate(270deg);
+    }
+    100% {
+        transform: translate(1px, -1px);
+        filter: hue-rotate(360deg);
+    }
+}
+
+/* Glitch Background Effect */
+.glitch-active::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(255, 77, 77, 0.05), rgba(77, 132, 255, 0.05));
+    pointer-events: none;
+    z-index: 9998;
+    animation: glitch-bg 2s linear infinite;
+}
+
+@keyframes glitch-bg {
+    0% {
+        background-position: 0 0;
+        filter: hue-rotate(0deg);
+    }
+    25% {
+        background-position: 40px 10px;
+        filter: hue-rotate(90deg);
+    }
+    50% {
+        background-position: -40px -10px;
+        filter: hue-rotate(180deg);
+    }
+    75% {
+        background-position: 0 -20px;
+        filter: hue-rotate(270deg);
+    }
+    100% {
+        background-position: 0 0;
+        filter: hue-rotate(360deg);
+    }
+}
+
+/* Glitch Scanline Effect */
+.glitch-active::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(77, 132, 255, 0.1) 50%,
+        transparent 51%,
+        rgba(255, 77, 77, 0.1) 100%
+    );
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 9999;
+    animation: glitch-scanline 4s linear infinite;
+}
+
+@keyframes glitch-scanline {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(100vh);
+    }
+}
+
+/* Glitch Button Shake */
+.glitch-active .cta-button,
+.glitch-active .submit-button,
+.glitch-active .service-link,
+.glitch-active .work-link {
+    animation: glitch-shake 0.3s linear infinite;
+}
+
+@keyframes glitch-shake {
+    0% {
+        transform: translate(0);
+    }
+    25% {
+        transform: translate(1px, 1px);
+    }
+    50% {
+        transform: translate(-1px, -1px);
+    }
+    75% {
+        transform: translate(-1px, 1px);
+    }
+    100% {
+        transform: translate(1px, -1px);
+    }
 } 
