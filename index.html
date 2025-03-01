@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GhostSolution - Cybersecurity & Audit</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+</head>
+
+<body>
+    <div class="sound-control">
+        <button id="toggleSound" class="sound-button">
+            <i class="fas fa-volume-mute"></i>
+        </button>
+    </div>
+
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">
+                <i class="fas fa-shield-alt logo-icon"></i> GhostSolution
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="#accueil" class="nav-link">HOME</a></li>
+                    <li><a href="#services" class="nav-link">SERVICES</a></li>
+                    <li><a href="#expertise" class="nav-link">EXPERTISE</a></li>
+                    <li><a href="#contact" class="nav-link">CONTACT</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <section id="accueil" class="hero">
+            <h1>SECURE YOUR DIGITAL FUTURE</h1>
+            <p>Cybersecurity experts and security audits to protect your sensitive data</p>
+            <button class="cta-button" id="discoverBtn">DISCOVER OUR SERVICES <i
+                    class="fas fa-arrow-right"></i></button>
+            <div class="matrix-bg" id="matrixCanvas"></div>
+        </section>
+
+        <section id="services" class="services">
+            <div class="container">
+                <h2 class="section-title">YOUR SERVICES</h2>
+                <div class="service-grid">
+                    <div class="service-card">
+                        <i class="fas fa-search service-icon"></i>
+                        <h3>SECURITY AUDIT</h3>
+                        <p>Comprehensive assessment of your infrastructure to identify vulnerabilities and security gaps
+                            in your systems.</p>
+                        <a href="#contact" class="service-link">Learn more <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-microscope service-icon"></i>
+                        <h3>FORENSIC</h3>
+                        <p>Digital investigation and evidence collection to analyze security incidents and recover
+                            critical data for legal proceedings.</p>
+                        <a href="#contact" class="service-link">Learn more <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-bolt service-icon"></i>
+                        <h3>INCIDENT RESPONSE</h3>
+                        <p>Fast and effective intervention in case of security breach to minimize damage and restore
+                            operations.</p>
+                        <a href="#contact" class="service-link">Learn more <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="expertise" class="expertise">
+            <div class="container">
+                <h2 class="section-title">PREVIOUS WORK</h2>
+                <div class="previous-works">
+                    <div class="work-card">
+                        <div class="work-image">
+                            <i class="fas fa-shield-virus work-icon"></i>
+                        </div>
+                        <div class="work-content">
+                            <h3 class="work-title">SCP:SL Anti-Cheat Analysis</h3>
+                            <p class="work-description">In-depth analysis of the SCP:SL anti-cheat system, revealing
+                                critical flaws in the Themida implementation and detection mechanisms.
+                                This research identified vulnerabilities in backend communication
+                                and integrity checks.</p>
+                            <div class="work-details">
+                                <span class="work-date"><i class="far fa-calendar-alt"></i> February 2025</span>
+                                <span class="work-type"><i class="fas fa-code-branch"></i> Reverse Engineering</span>
+                            </div>
+                            <a href="https://www.unknowncheats.me/forum/anti-cheat-bypass/688412-scp-sl-anti-cheat-analysis.html"
+                                target="_blank" class="work-link">VIEW FULL ANALYSIS <i
+                                    class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact">
+            <div class="container">
+                <h2 class="section-title">CONTACT</h2>
+                <div class="contact-container centered-form">
+                    <div class="contact-form">
+                        <form id="contactForm">
+                            <div class="form-group">
+                                <label for="name">NAME</label>
+                                <input type="text" id="name" name="name" required class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">EMAIL</label>
+                                <input type="email" id="email" name="email" required class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="service">SERVICE</label>
+                                <select id="service" name="service" class="form-control">
+                                    <option value="audit">Security Audit</option>
+                                    <option value="forensic">Forensic</option>
+                                    <option value="incident">Incident Response</option>
+                                    <option value="autre">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">MESSAGE</label>
+                                <textarea id="message" name="message" rows="5" required class="form-control"></textarea>
+                            </div>
+                            <button type="submit" class="submit-button">SEND MESSAGE <i
+                                    class="fas fa-paper-plane"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-about">
+                <a href="#" class="footer-logo">
+                    <i class="fas fa-shield-alt"></i> GhostSolution
+                </a>
+                <p>Providing professional cybersecurity services to protect your digital assets and ensure your business
+                    continuity.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+            <div class="footer-links-section">
+                <h3 class="footer-heading">Services</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-angle-right"></i> Security Audit</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> Forensic</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> Incident Response</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> Security Training</a></li>
+                </ul>
+            </div>
+            <div class="footer-links-section">
+                <h3 class="footer-heading">Company</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-angle-right"></i> About Us</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> Our Team</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> Careers</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-links-section">
+                <h3 class="footer-heading">Legal</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-angle-right"></i> Privacy Policy</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> Terms of Service</a></li>
+                    <li><a href="#"><i class="fas fa-angle-right"></i> Cookie Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 GhostSolution. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div class="cursor-follower"></div>
+    <audio id="backgroundMusic" loop>
+        <source src="audio/cyberpunk-ambient.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="hoverSound">
+        <source src="audio/hover.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="clickSound">
+        <source src="audio/click.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>
