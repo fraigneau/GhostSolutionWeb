@@ -3,36 +3,41 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description"
+        content="GhostSolution - Experts en cybersécurité et audits de sécurité pour protéger vos données sensibles">
+    <meta name="theme-color" content="#0f1624">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>GhostSolution - Cybersecurity & Audit</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/png" href="img/favicon.png">
+    <!-- Préchargement des polices pour améliorer les performances -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 
 <body>
     <div class="sound-control">
-        <button id="toggleSound" class="sound-button">
-            <i class="fas fa-volume-mute"></i>
+        <button id="toggleSound" class="sound-button" aria-label="Activer/désactiver le son">
+            <i class="fas fa-volume-mute" aria-hidden="true"></i>
         </button>
     </div>
 
     <header>
         <div class="header-container">
-            <a href="#" class="logo">
-                <i class="fas fa-shield-alt logo-icon"></i> GhostSolution
+            <a href="#" class="logo" aria-label="GhostSolution Accueil">
+                <i class="fas fa-shield-alt logo-icon" aria-hidden="true"></i> GhostSolution
             </a>
-            <nav>
-                <ul>
+            <nav aria-label="Navigation principale" class="desktop-only">
+                <ul id="navMenu">
                     <li><a href="#accueil" class="nav-link">HOME</a></li>
                     <li><a href="#services" class="nav-link">SERVICES</a></li>
                     <li><a href="#expertise" class="nav-link">EXPERTISE</a></li>
                     <li><a href="#contact" class="nav-link">CONTACT</a></li>
                 </ul>
             </nav>
-            <button class="mobile-menu-toggle" id="mobileMenuToggle">
-                <i class="fas fa-bars"></i>
-            </button>
         </div>
     </header>
 
@@ -214,8 +219,8 @@
 
     <!-- Configuration and scripts -->
     <script src="js/config.local.js" onerror="console.log('No local configuration found')"></script>
-    <script src="js/config.js" type="module"></script>
-    <script src="js/main.js" type="module"></script>
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>

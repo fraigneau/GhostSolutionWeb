@@ -21,6 +21,19 @@
     --gradient-primary: linear-gradient(135deg, #4d84ff, #00c8ff);
     --shadow-primary: 0 10px 30px rgba(0, 200, 255, 0.1);
     --shadow-card: 0 15px 25px rgba(0, 0, 0, 0.2);
+    
+    /* Variables responsives pour les espacements et tailles */
+    --padding-section: 100px 0;
+    --padding-section-mobile: 60px 0;
+    --padding-card: 40px 30px;
+    --padding-card-mobile: 30px 20px;
+    --gap-grid: 40px;
+    --gap-grid-mobile: 20px;
+    --font-size-h1: 3.5rem;
+    --font-size-h1-tablet: 2.5rem;
+    --font-size-h1-mobile: 2rem;
+    --font-size-section-title: 2.5rem;
+    --font-size-section-title-mobile: 2rem;
 }
 
 * {
@@ -35,6 +48,35 @@ body {
     color: var(--text-color);
     line-height: 1.6;
     overflow-x: hidden;
+    font-size: 16px;
+}
+
+/* Règles générales pour les médias responsifs */
+img, video, iframe, canvas, svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Règles pour les tableaux responsifs */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow-x: auto;
+    display: block;
+}
+
+@media (min-width: 768px) {
+    table {
+        display: table;
+    }
+}
+
+/* Règles pour les formulaires responsifs */
+input, select, textarea, button {
+    font-family: inherit;
+    font-size: inherit;
+    max-width: 100%;
 }
 
 /* Sound Control Button Styles */
@@ -85,10 +127,30 @@ body {
     }
 }
 
+@media (max-width: 480px) {
+    .sound-control {
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .sound-button {
+        width: 45px;
+        height: 45px;
+        font-size: 1rem;
+    }
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+    width: 100%;
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 15px;
+    }
 }
 
 /* Custom cursor styles */
@@ -157,25 +219,51 @@ header.scrolled {
     gap: 10px;
 }
 
+@media (max-width: 480px) {
+    .logo {
+        font-size: 1.5rem;
+    }
+}
+
 .logo-icon {
     color: var(--accent-color);
 }
 
+/* Classe pour masquer les éléments sur mobile */
+.desktop-only {
+    display: flex;
+}
+
+@media (max-width: 768px) {
+    .desktop-only {
+        display: none;
+    }
+}
+
+/* Suppression des styles du menu mobile */
+.smart-menu-toggle,
+.smart-menu-popup {
+    display: none;
+}
+
+/* Styles de navigation simplifiés */
 nav ul {
     display: flex;
     list-style: none;
-    gap: 30px;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
 }
 
 nav a {
     color: var(--text-color);
     text-decoration: none;
-    font-weight: 500;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    font-weight: 600;
     letter-spacing: 1px;
-    position: relative;
-    padding: 5px 0;
     transition: color 0.3s ease;
+    position: relative;
+    padding: 0.5rem 0;
 }
 
 nav a:hover {
@@ -195,16 +283,6 @@ nav a::after {
 
 nav a:hover::after {
     width: 100%;
-}
-
-/* Mobile menu */
-.mobile-menu-toggle {
-    display: none;
-    background: none;
-    border: none;
-    color: var(--text-color);
-    font-size: 1.5rem;
-    cursor: pointer;
 }
 
 /* Hero Section */
@@ -233,7 +311,7 @@ nav a:hover::after {
 
 .hero h1 {
     font-family: 'Orbitron', sans-serif;
-    font-size: 3.5rem;
+    font-size: var(--font-size-h1);
     font-weight: 700;
     margin-bottom: 20px;
     background: var(--gradient-primary);
@@ -242,6 +320,7 @@ nav a:hover::after {
     color: transparent;
     text-shadow: 0 5px 15px rgba(0, 200, 255, 0.3);
     max-width: 800px;
+    padding: 0 20px;
 }
 
 .hero p {
@@ -249,6 +328,36 @@ nav a:hover::after {
     max-width: 600px;
     margin-bottom: 40px;
     color: rgba(230, 230, 230, 0.8);
+    padding: 0 20px;
+}
+
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: var(--font-size-h1-tablet);
+    }
+    
+    .hero p {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        padding-top: 60px;
+    }
+    
+    .hero h1 {
+        font-size: var(--font-size-h1-mobile);
+    }
+    
+    .hero p {
+        font-size: 1rem;
+        margin-bottom: 30px;
+    }
+    
+    .cta-button {
+        padding: 12px 30px;
+    }
 }
 
 .cta-button {
@@ -299,56 +408,63 @@ nav a:hover::after {
 
 /* Services Section */
 .services {
-    padding: 100px 0;
+    padding: var(--padding-section);
     background-color: var(--dark-accent);
     position: relative;
 }
 
-.services::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('../img/circuit-pattern.svg');
-    background-size: cover;
-    opacity: 0.05;
-    z-index: 0;
+@media (max-width: 768px) {
+    .services {
+        padding: var(--padding-section-mobile);
+    }
 }
 
 .section-title {
     font-family: 'Orbitron', sans-serif;
-    font-size: 2.5rem;
+    font-size: var(--font-size-section-title);
     text-align: center;
     margin-bottom: 60px;
     position: relative;
     color: var(--text-color);
+    padding: 0 20px;
 }
 
-.section-title::after {
-    content: '';
-    position: absolute;
-    bottom: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 3px;
-    background: var(--gradient-primary);
+@media (max-width: 768px) {
+    .section-title {
+        font-size: var(--font-size-section-title-mobile);
+        margin-bottom: 40px;
+    }
+    
+    .section-title::after {
+        width: 60px;
+        bottom: -10px;
+    }
 }
 
 .service-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 40px;
+    gap: var(--gap-grid);
     position: relative;
     z-index: 1;
+}
+
+@media (max-width: 768px) {
+    .service-grid {
+        gap: var(--gap-grid-mobile);
+    }
+}
+
+@media (max-width: 480px) {
+    .service-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .service-card {
     background-color: rgba(26, 35, 51, 0.7);
     border-radius: 10px;
-    padding: 40px 30px;
+    padding: var(--padding-card);
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
@@ -358,6 +474,12 @@ nav a:hover::after {
     display: flex;
     flex-direction: column;
     height: 100%;
+}
+
+@media (max-width: 768px) {
+    .service-card {
+        padding: var(--padding-card-mobile);
+    }
 }
 
 .service-card::before {
@@ -458,10 +580,16 @@ nav a:hover::after {
 
 /* Expertise Section - Transformée en Previous Work */
 .expertise {
-    padding: 100px 0;
+    padding: var(--padding-section);
     background-color: var(--bg-color);
     position: relative;
     overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    .expertise {
+        padding: var(--padding-section-mobile);
+    }
 }
 
 .expertise::after {
@@ -484,6 +612,18 @@ nav a:hover::after {
     gap: 60px;
     max-width: 1000px;
     margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .previous-works {
+        gap: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .previous-works {
+        gap: 30px;
+    }
 }
 
 .work-card {
@@ -666,9 +806,15 @@ nav a:hover::after {
 
 /* Contact Section */
 .contact {
-    padding: 100px 0;
+    padding: var(--padding-section);
     background-color: var(--dark-accent);
     position: relative;
+}
+
+@media (max-width: 768px) {
+    .contact {
+        padding: var(--padding-section-mobile);
+    }
 }
 
 .contact::before {
@@ -688,6 +834,23 @@ nav a:hover::after {
     gap: 60px;
     position: relative;
     z-index: 1;
+}
+
+@media (max-width: 1024px) {
+    .contact-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .contact-info {
+        padding-right: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-container {
+        gap: 30px;
+    }
 }
 
 /* Formulaire centré */
@@ -773,11 +936,17 @@ nav a:hover::after {
 .contact-form {
     background-color: rgba(26, 35, 51, 0.7);
     border-radius: 10px;
-    padding: 40px;
+    padding: var(--padding-card);
     box-shadow: var(--shadow-card);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(77, 132, 255, 0.1);
     width: 100%;
+}
+
+@media (max-width: 768px) {
+    .contact-form {
+        padding: var(--padding-card-mobile);
+    }
 }
 
 .form-group {
@@ -842,6 +1011,12 @@ footer {
     border-top: 1px solid rgba(77, 132, 255, 0.1);
 }
 
+@media (max-width: 768px) {
+    footer {
+        padding: 40px 0 20px;
+    }
+}
+
 .footer-container {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr;
@@ -849,6 +1024,19 @@ footer {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+}
+
+@media (max-width: 1024px) {
+    .footer-container {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
 }
 
 .footer-logo {
@@ -962,13 +1150,20 @@ footer {
     }
 }
 
-/* Responsive Design */
+/* Responsive Design - Ajouts supplémentaires */
+@media (max-width: 1200px) {
+    .container {
+        max-width: 100%;
+    }
+}
+
 @media (max-width: 1024px) {
-    .expertise-content {
-        grid-template-columns: 1fr;
+    :root {
+        --padding-section: 80px 0;
+        --padding-section-mobile: 50px 0;
     }
     
-    .contact-container {
+    .expertise-content {
         grid-template-columns: 1fr;
     }
     
@@ -982,36 +1177,33 @@ footer {
 }
 
 @media (max-width: 768px) {
+    :root {
+        --font-size-h1: 2.5rem;
+        --font-size-h1-tablet: 2.2rem;
+        --font-size-h1-mobile: 1.8rem;
+        --font-size-section-title: 2rem;
+        --font-size-section-title-mobile: 1.8rem;
+    }
+    
     .hero h1 {
-        font-size: 2.5rem;
+        font-size: var(--font-size-h1-tablet);
     }
     
     .section-title {
-        font-size: 2rem;
+        font-size: var(--font-size-section-title-mobile);
     }
     
-    .mobile-menu-toggle {
-        display: block;
+    .work-content {
+        padding: 30px 20px;
     }
     
-    nav ul {
-        position: fixed;
-        top: 80px;
-        left: 0;
-        width: 100%;
-        background-color: var(--dark-accent);
+    .work-title {
+        font-size: 1.5rem;
+    }
+    
+    .work-details {
         flex-direction: column;
-        padding: 20px;
         gap: 15px;
-        transform: translateY(-100%);
-        opacity: 0;
-        transition: all 0.3s ease;
-        z-index: 99;
-    }
-    
-    nav ul.active {
-        transform: translateY(0);
-        opacity: 1;
     }
     
     .footer-container {
@@ -1025,8 +1217,22 @@ footer {
 }
 
 @media (max-width: 480px) {
+    :root {
+        --padding-section-mobile: 40px 0;
+        --padding-card-mobile: 25px 15px;
+        --gap-grid-mobile: 15px;
+    }
+    
+    body {
+        font-size: 14px;
+    }
+    
     .hero h1 {
-        font-size: 2rem;
+        font-size: var(--font-size-h1-mobile);
+    }
+    
+    .hero p {
+        font-size: 0.95rem;
     }
     
     .expertise-stats {
@@ -1040,6 +1246,61 @@ footer {
     .centered-form .form-group {
         margin-bottom: 20px;
     }
+    
+    .work-link {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .social-links {
+        flex-wrap: wrap;
+    }
+    
+    .footer-bottom {
+        margin-top: 40px;
+        font-size: 0.8rem;
+    }
+    
+    .stat-value {
+        font-size: 2rem;
+    }
+}
+
+/* Ajout pour les très petits écrans */
+@media (max-width: 360px) {
+    :root {
+        --font-size-h1-mobile: 1.6rem;
+        --font-size-section-title-mobile: 1.6rem;
+    }
+    
+    .hero h1 {
+        font-size: var(--font-size-h1-mobile);
+    }
+    
+    .section-title {
+        font-size: var(--font-size-section-title-mobile);
+    }
+    
+    .cta-button {
+        padding: 10px 25px;
+        font-size: 0.9rem;
+    }
+    
+    .service-icon {
+        font-size: 2rem;
+    }
+    
+    .service-card h3 {
+        font-size: 1.3rem;
+    }
+    
+    .work-title {
+        font-size: 1.3rem;
+    }
+    
+    .contact-info h3 {
+        font-size: 1.5rem;
+    }
 }
 
 /* Styles pour les statistiques */
@@ -1048,6 +1309,19 @@ footer {
     grid-template-columns: repeat(3, 1fr);
     gap: 30px;
     margin-top: 40px;
+}
+
+@media (max-width: 768px) {
+    .expertise-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .expertise-stats {
+        grid-template-columns: 1fr;
+    }
 }
 
 .stat-item {

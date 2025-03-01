@@ -1,8 +1,16 @@
+// Utiliser la configuration globale
 // Importer la configuration
-import config from './config.js';
+// import config from './config.js';
 
 // Wait for DOM to be loaded
 document.addEventListener('DOMContentLoaded', function() {
+    // Utiliser la configuration globale
+    const config = window.config || {};
+    console.log('Configuration chargée:', config);
+    
+    // Vérifier si le document est complètement chargé
+    console.log('DOM chargé, initialisation des éléments...');
+    
     // DOM Elements   
     const soundButton = document.getElementById('toggleSound');
     const backgroundMusic = document.getElementById('backgroundMusic');
@@ -13,41 +21,46 @@ document.addEventListener('DOMContentLoaded', function() {
     const discoverBtn = document.getElementById('discoverBtn');
     const contactForm = document.getElementById('contactForm');
     const header = document.querySelector('header');
-    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-    const navMenu = document.querySelector('nav ul');
+    const navMenu = document.getElementById('navMenu');
     const workCard = document.querySelector('.work-card');
     const cursorFollower = document.querySelector('.cursor-follower');
+    
+    // Vérifier les éléments critiques
+    console.log('Éléments DOM trouvés:', {
+        soundButton: !!soundButton,
+        backgroundMusic: !!backgroundMusic,
+        discoverBtn: !!discoverBtn,
+        contactForm: !!contactForm,
+        navMenu: !!navMenu
+    });
 
     // Variables
     let soundEnabled = false;
-    let isMobileMenuOpen = false;
-
 
     // Initialization
-    initCursorFollower();
-    initSoundControl();
-    initNavLinks();
-    initServiceCards();
-    initDiscoverButton();
-    initContactForm();
-    initScrollAnimations();
-    initMatrixBackground();
-    initMobileMenu();
-    initHeaderScroll();
+    try {
+        initCursorFollower();
+        initSoundControl();
+        initNavLinks();
+        initServiceCards();
+        initDiscoverButton();
+        initContactForm();
+        initScrollAnimations();
+        initMatrixBackground();
+        initHeaderScroll();
+        console.log('Initialisation terminée avec succès');
+    } catch (error) {
+        console.error('Erreur lors de l\'initialisation:', error);
+    }
 
     // Function to initialize custom cursor (desktop only)
     function initCursorFollower() {
-        // Check if cursor follower element exists
-        if (!cursorFollower) {
-            console.error('Cursor follower element not found');
-            return;
-        }
+        if (!cursorFollower) return;
         
         // Only enable custom cursor on desktop
         if (window.innerWidth > 768) {
             // Update cursor position on mousemove
             document.addEventListener('mousemove', function(e) {
-                // Update cursor position immediately for better responsiveness
                 requestAnimationFrame(function() {
                     cursorFollower.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
                 });
@@ -101,11 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to initialize sound control
     function initSoundControl() {
-        // Check if audio elements exist
-        if (!backgroundMusic || !hoverSound || !clickSound) {
-            console.error('One or more audio elements not found');
-            return;
-        }
+        if (!backgroundMusic || !hoverSound || !clickSound || !soundButton) return;
 
         // Preload audio files
         backgroundMusic.load();
@@ -127,15 +136,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 if (playPromise !== undefined) {
                     playPromise.then(_ => {
-                        // Playback started successfully
-                        console.log("Background music started successfully");
                         soundButton.classList.add('sound-on');
                         soundButton.innerHTML = '<i class="fas fa-volume-up"></i>';
                     })
                     .catch(error => {
                         // Auto-play was prevented
-                        console.error("Audio playback was prevented:", error);
-                        // Reset sound state
                         soundEnabled = false;
                         soundButton.classList.remove('sound-on');
                         soundButton.innerHTML = '<i class="fas fa-volume-mute"></i>';
@@ -181,6 +186,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to initialize navigation links
     function initNavLinks() {
+        if (!navLinks.length) return;
+        
         navLinks.forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -188,47 +195,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 const targetId = this.getAttribute('href');
                 const targetSection = document.querySelector(targetId);
                 
-                window.scrollTo({
-                    top: targetSection.offsetTop - 80,
-                    behavior: 'smooth'
-                });
-                
-                // Close mobile menu if open
-                if (navMenu.classList.contains('active')) {
-                    navMenu.classList.remove('active');
+                if (targetSection) {
+                    window.scrollTo({
+                        top: targetSection.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
                 }
             });
         });
     }
 
-    // Function to initialize mobile menu
-    function initMobileMenu() {
-        mobileMenuToggle.addEventListener('click', function() {
-            navMenu.classList.toggle('active');
-            isMobileMenuOpen = !isMobileMenuOpen;
-            
-            // Change icon based on menu state
-            if (isMobileMenuOpen) {
-                mobileMenuToggle.innerHTML = '<i class="fas fa-times"></i>';
-            } else {
-                mobileMenuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-            }
-        });
-    }
-
-    // Function to handle header scroll effect
-    function initHeaderScroll() {
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-    }
-
     // Function to initialize service cards
     function initServiceCards() {
+        if (!serviceCards.length) return;
+        
         serviceCards.forEach(card => {
             // Hover animation
             card.addEventListener('mouseenter', function() {
@@ -241,13 +221,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to initialize discover button
     function initDiscoverButton() {
+        if (!discoverBtn) return;
+        
         discoverBtn.addEventListener('click', function() {
             const servicesSection = document.getElementById('services');
             
-            window.scrollTo({
-                top: servicesSection.offsetTop - 80,
-                behavior: 'smooth'
-            });
+            if (servicesSection) {
+                window.scrollTo({
+                    top: servicesSection.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
         });
     }
 
@@ -275,6 +259,14 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Prepare data for Discord webhook
             const webhookUrl = config.discordWebhookUrl;
+            
+            // Si l'URL du webhook est vide, afficher un message et ne pas envoyer
+            if (!webhookUrl) {
+                console.log('Webhook URL not configured. Form submission simulated.');
+                showSuccess(this.querySelector('.submit-button'), this.querySelector('.submit-button').innerHTML);
+                return;
+            }
+            
             const webhookData = {
                 content: "New contact message received!",
                 embeds: [{
@@ -333,15 +325,12 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(response => {
                 if (response.ok) {
-                    console.log('Message successfully sent to Discord webhook');
                     showSuccess(button, originalText);
                 } else {
-                    console.error('Error sending to Discord webhook');
                     showError(button, originalText);
                 }
             })
             .catch(error => {
-                console.error('Error sending to Discord webhook:', error);
                 showError(button, originalText);
             });
         }
@@ -397,22 +386,24 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         
         // Service cards animation
-        const serviceCardsObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                    serviceCardsObserver.unobserve(entry.target);
-                }
+        if (serviceCards.length) {
+            const serviceCardsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        serviceCardsObserver.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            serviceCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transitionDelay = `${index * 0.1}s`;
+                serviceCardsObserver.observe(card);
             });
-        }, observerOptions);
-        
-        serviceCards.forEach((card, index) => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(30px)';
-            card.style.transitionDelay = `${index * 0.1}s`;
-            serviceCardsObserver.observe(card);
-        });
+        }
         
         // Work card animation
         if (workCard) {
@@ -434,11 +425,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to initialize Matrix background
     function initMatrixBackground() {
-        const canvas = document.createElement('canvas');
         const matrixBg = document.getElementById('matrixCanvas');
-        
         if (!matrixBg) return;
         
+        const canvas = document.createElement('canvas');
         matrixBg.appendChild(canvas);
         
         const ctx = canvas.getContext('2d');
@@ -496,52 +486,54 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Function to handle header scroll effect
+    function initHeaderScroll() {
+        if (!header) return;
+        
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    }
+
     // Handle window resize
     window.addEventListener('resize', function() {
         // Toggle custom cursor based on screen size
+        if (!cursorFollower) return;
+        
         if (window.innerWidth <= 768) {
-            if (cursorFollower) {
-                cursorFollower.style.display = 'none';
-                document.body.style.cursor = 'auto';
-                document.body.classList.remove('custom-cursor-active');
-                
-                // Remove cursor style sheet if it exists
-                const cursorStyle = document.getElementById('cursor-style');
-                if (cursorStyle) {
-                    cursorStyle.remove();
-                }
+            cursorFollower.style.display = 'none';
+            document.body.style.cursor = 'auto';
+            document.body.classList.remove('custom-cursor-active');
+            
+            // Remove cursor style sheet if it exists
+            const cursorStyle = document.getElementById('cursor-style');
+            if (cursorStyle) {
+                cursorStyle.remove();
             }
         } else {
-            if (cursorFollower) {
-                console.log("Resizing to desktop, reactivating custom cursor");
-                
-                // Recreate cursor style sheet
-                let cursorStyle = document.getElementById('cursor-style');
-                if (!cursorStyle) {
-                    cursorStyle = document.createElement('style');
-                    cursorStyle.id = 'cursor-style';
-                    cursorStyle.textContent = `
-                        body, a, button, input, textarea, select, label, .service-card, .social-link, [role="button"], .work-card {
-                            cursor: none !important;
-                        }
-                        .cursor-follower {
-                            display: block !important;
-                        }
-                    `;
-                    document.head.appendChild(cursorStyle);
-                    console.log("Cursor style sheet added after resize");
-                }
-                
-                // Activate custom cursor
-                cursorFollower.style.display = 'block';
-                document.body.classList.add('custom-cursor-active');
+            // Recreate cursor style sheet
+            let cursorStyle = document.getElementById('cursor-style');
+            if (!cursorStyle) {
+                cursorStyle = document.createElement('style');
+                cursorStyle.id = 'cursor-style';
+                cursorStyle.textContent = `
+                    body, a, button, input, textarea, select, label, .service-card, .social-link, [role="button"], .work-card {
+                        cursor: none !important;
+                    }
+                    .cursor-follower {
+                        display: block !important;
+                    }
+                `;
+                document.head.appendChild(cursorStyle);
             }
-        }
-        
-        // Close mobile menu on resize
-        if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
-            navMenu.classList.remove('active');
-            mobileMenuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            
+            // Activate custom cursor
+            cursorFollower.style.display = 'block';
+            document.body.classList.add('custom-cursor-active');
         }
     });
 }); 
