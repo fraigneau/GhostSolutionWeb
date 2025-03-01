@@ -355,6 +355,9 @@ nav a:hover::after {
     box-shadow: var(--shadow-card);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(77, 132, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .service-card::before {
@@ -396,6 +399,27 @@ nav a:hover::after {
 .service-card p {
     color: rgba(230, 230, 230, 0.7);
     margin-bottom: 20px;
+    flex-grow: 0;
+}
+
+/* Service features list */
+.service-features {
+    list-style: none;
+    margin-bottom: 25px;
+    flex-grow: 1;
+}
+
+.service-features li {
+    margin-bottom: 10px;
+    color: rgba(230, 230, 230, 0.8);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.service-features li i {
+    color: var(--success-color);
+    font-size: 0.9rem;
 }
 
 .service-link {
@@ -406,11 +430,30 @@ nav a:hover::after {
     align-items: center;
     gap: 5px;
     transition: all 0.3s ease;
+    margin-top: auto;
+    padding: 8px 0;
+    position: relative;
+}
+
+.service-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent-color);
+    transition: width 0.3s ease;
 }
 
 .service-link:hover {
     color: var(--secondary-color);
     gap: 10px;
+}
+
+.service-link:hover::after {
+    width: 100%;
+    background: var(--secondary-color);
 }
 
 /* Expertise Section - Transformée en Previous Work */

@@ -1,11 +1,9 @@
+// Importer la configuration
+import config from './config.js';
+
 // Wait for DOM to be loaded
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("DOM loaded, initializing custom cursor...");
-    
-    // DOM Elements
-    let cursorFollower = document.querySelector('.cursor-follower');
-    console.log("Cursor element found:", cursorFollower);
-    
+    // DOM Elements   
     const soundButton = document.getElementById('toggleSound');
     const backgroundMusic = document.getElementById('backgroundMusic');
     const hoverSound = document.getElementById('hoverSound');
@@ -18,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const mobileMenuToggle = document.getElementById('mobileMenuToggle');
     const navMenu = document.querySelector('nav ul');
     const workCard = document.querySelector('.work-card');
+    const cursorFollower = document.querySelector('.cursor-follower');
 
     // Variables
     let soundEnabled = false;
@@ -252,31 +251,140 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Function to initialize contact form
+    /**
+     * Initialize contact form with Discord webhook integration
+     * Handles form submission and sends data to Discord
+     */
     function initContactForm() {
+        if (!contactForm) return;
+
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Simulate form submission
+            // Get form data
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const service = document.getElementById('service').value;
+            const message = document.getElementById('message').value.trim();
+            
+            // Validate form data
+            if (!name || !email || !message) {
+                console.error('Form validation failed');
+                return;
+            }
+            
+            // Prepare data for Discord webhook
+            const webhookUrl = config.discordWebhookUrl;
+            const webhookData = {
+                content: "New contact message received!",
+                embeds: [{
+                    title: "New Contact Message",
+                    color: 3447003,
+                    fields: [
+                        {
+                            name: "Name",
+                            value: name,
+                            inline: true
+                        },
+                        {
+                            name: "Email",
+                            value: email,
+                            inline: true
+                        },
+                        {
+                            name: "Service",
+                            value: service,
+                            inline: true
+                        },
+                        {
+                            name: "Message",
+                            value: message
+                        }
+                    ],
+                    timestamp: new Date().toISOString()
+                }]
+            };
+            
+            // Update UI for submission
             const submitButton = this.querySelector('.submit-button');
             const originalText = submitButton.innerHTML;
             
             submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> SENDING...';
             submitButton.disabled = true;
             
-            setTimeout(() => {
-                submitButton.innerHTML = '<i class="fas fa-check"></i> SENT!';
-                submitButton.style.backgroundColor = 'var(--success-color)';
-                
-                // Reset form
-                setTimeout(() => {
-                    submitButton.innerHTML = originalText;
-                    submitButton.disabled = false;
-                    submitButton.style.backgroundColor = '';
-                    contactForm.reset();
-                }, 2000);
-            }, 1500);
+            // Send data to Discord webhook
+            sendToDiscord(webhookUrl, webhookData, submitButton, originalText);
         });
+        
+        /**
+         * Send data to Discord webhook
+         * @param {string} url - Discord webhook URL
+         * @param {Object} data - Data to send
+         * @param {HTMLElement} button - Submit button element
+         * @param {string} originalText - Original button text
+         */
+        function sendToDiscord(url, data, button, originalText) {
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Message successfully sent to Discord webhook');
+                    showSuccess(button, originalText);
+                } else {
+                    console.error('Error sending to Discord webhook');
+                    showError(button, originalText);
+                }
+            })
+            .catch(error => {
+                console.error('Error sending to Discord webhook:', error);
+                showError(button, originalText);
+            });
+        }
+        
+        /**
+         * Show success message and reset form
+         * @param {HTMLElement} button - Submit button element
+         * @param {string} originalText - Original button text
+         */
+        function showSuccess(button, originalText) {
+            button.innerHTML = '<i class="fas fa-check"></i> SENT!';
+            button.style.backgroundColor = 'var(--success-color)';
+            
+            setTimeout(() => {
+                resetButton(button, originalText);
+                contactForm.reset();
+            }, 2000);
+        }
+        
+        /**
+         * Show error message
+         * @param {HTMLElement} button - Submit button element
+         * @param {string} originalText - Original button text
+         */
+        function showError(button, originalText) {
+            button.innerHTML = '<i class="fas fa-times"></i> ERROR!';
+            button.style.backgroundColor = 'var(--danger-color)';
+            
+            setTimeout(() => {
+                resetButton(button, originalText);
+            }, 2000);
+        }
+        
+        /**
+         * Reset button to original state
+         * @param {HTMLElement} button - Submit button element
+         * @param {string} originalText - Original button text
+         */
+        function resetButton(button, originalText) {
+            button.innerHTML = originalText;
+            button.disabled = false;
+            button.style.backgroundColor = '';
+        }
     }
 
     // Function to initialize scroll animations

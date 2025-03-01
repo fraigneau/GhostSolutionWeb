@@ -47,28 +47,46 @@
 
         <section id="services" class="services">
             <div class="container">
-                <h2 class="section-title">YOUR SERVICES</h2>
+                <h2 class="section-title">YOUR EXPERTISE</h2>
                 <div class="service-grid">
                     <div class="service-card">
-                        <i class="fas fa-search service-icon"></i>
-                        <h3>SECURITY AUDIT</h3>
-                        <p>Comprehensive assessment of your infrastructure to identify vulnerabilities and security gaps
-                            in your systems.</p>
-                        <a href="#contact" class="service-link">Learn more <i class="fas fa-chevron-right"></i></a>
+                        <i class="fas fa-shield-alt service-icon"></i>
+                        <h3>ADVANCED SECURITY AUDIT</h3>
+                        <p>Comprehensive penetration testing and vulnerability assessment to identify critical security
+                            gaps in your infrastructure before attackers do.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check"></i> Network vulnerability scanning</li>
+                            <li><i class="fas fa-check"></i> Web application testing</li>
+                            <li><i class="fas fa-check"></i> Cloud security assessment</li>
+                        </ul>
+                        <a href="#contact" class="service-link">Request an audit <i
+                                class="fas fa-chevron-right"></i></a>
                     </div>
                     <div class="service-card">
-                        <i class="fas fa-microscope service-icon"></i>
-                        <h3>FORENSIC</h3>
-                        <p>Digital investigation and evidence collection to analyze security incidents and recover
-                            critical data for legal proceedings.</p>
-                        <a href="#contact" class="service-link">Learn more <i class="fas fa-chevron-right"></i></a>
+                        <i class="fas fa-magnifying-glass-chart service-icon"></i>
+                        <h3>DIGITAL FORENSICS</h3>
+                        <p>State-of-the-art digital investigation techniques to recover evidence, analyze security
+                            incidents, and support legal proceedings with court-admissible findings.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check"></i> Incident analysis</li>
+                            <li><i class="fas fa-check"></i> Data recovery</li>
+                            <li><i class="fas fa-check"></i> Legal evidence collection</li>
+                        </ul>
+                        <a href="#contact" class="service-link">Discuss your case <i
+                                class="fas fa-chevron-right"></i></a>
                     </div>
                     <div class="service-card">
-                        <i class="fas fa-bolt service-icon"></i>
-                        <h3>INCIDENT RESPONSE</h3>
-                        <p>Fast and effective intervention in case of security breach to minimize damage and restore
-                            operations.</p>
-                        <a href="#contact" class="service-link">Learn more <i class="fas fa-chevron-right"></i></a>
+                        <i class="fas fa-microchip service-icon"></i>
+                        <h3>REVERSE ENGINEERING</h3>
+                        <p>Expert binary analysis and software dissection to uncover vulnerabilities, analyze malware,
+                            and develop custom security solutions for your organization.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check"></i> Malware analysis</li>
+                            <li><i class="fas fa-check"></i> Software vulnerability research</li>
+                            <li><i class="fas fa-check"></i> Custom protection development</li>
+                        </ul>
+                        <a href="#contact" class="service-link">Explore solutions <i
+                                class="fas fa-chevron-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -120,7 +138,7 @@
                                 <select id="service" name="service" class="form-control">
                                     <option value="audit">Security Audit</option>
                                     <option value="forensic">Forensic</option>
-                                    <option value="incident">Incident Response</option>
+                                    <option value="reverse">Reverse Engineering</option>
                                     <option value="autre">Other</option>
                                 </select>
                             </div>
@@ -154,10 +172,10 @@
             <div class="footer-links-section">
                 <h3 class="footer-heading">Services</h3>
                 <ul class="footer-links">
-                    <li><a href="#"><i class="fas fa-angle-right"></i> Security Audit</a></li>
-                    <li><a href="#"><i class="fas fa-angle-right"></i> Forensic</a></li>
-                    <li><a href="#"><i class="fas fa-angle-right"></i> Incident Response</a></li>
-                    <li><a href="#"><i class="fas fa-angle-right"></i> Security Training</a></li>
+                    <li><a href="#services"><i class="fas fa-angle-right"></i> Advanced Security Audit</a></li>
+                    <li><a href="#services"><i class="fas fa-angle-right"></i> Digital Forensics</a></li>
+                    <li><a href="#services"><i class="fas fa-angle-right"></i> Reverse Engineering</a></li>
+                    <li><a href="#services"><i class="fas fa-angle-right"></i> Security Training</a></li>
                 </ul>
             </div>
             <div class="footer-links-section">
@@ -194,7 +212,10 @@
         <source src="audio/click.mp3" type="audio/mpeg">
     </audio>
 
-    <script src="js/main.js"></script>
+    <!-- Configuration and scripts -->
+    <script src="js/config.local.js" onerror="console.log('No local configuration found')"></script>
+    <script src="js/config.js" type="module"></script>
+    <script src="js/main.js" type="module"></script>
 </body>
 
 </html>
