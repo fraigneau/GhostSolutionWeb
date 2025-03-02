@@ -1,19 +1,17 @@
 document.addEventListener('DOMContentLoaded', function() {
     // DOM Elements
     const toggleGlitchBtn = document.getElementById('toggleGlitch');
-    const glitchSound = document.getElementById('glitchSound');
     const body = document.body;
     
     // Variables
-    let soundEnabled = false; // Will be synchronized with the main sound button
     let glitchActive = false; // For manual control
     let autoGlitchActive = false; // For automatic effect
     let glitchTimeout;
     let scrollThreshold = 100; // Scroll threshold to start disabling the effect
     let scrollMax = 600; // Maximum scroll to completely disable the effect
     let lastScrollPosition = 0; // Track last scroll position
-    let noScrollTimer = null; // Timer for auto-disabling glitch after no scroll
-    let autoDisableDelay = 10000; // 10 seconds in milliseconds
+    let noScrollTimer = true; // Timer for auto-disabling glitch after no scroll
+    let autoDisableDelay = 5000; // 5 seconds in milliseconds
     
     // Check if elements exist
     if (!toggleGlitchBtn) {
@@ -27,23 +25,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function init() {
         // Add event listeners
         toggleGlitchBtn.addEventListener('click', toggleGlitch);
-        
-        // Synchronize sound state with main button
-        const mainSoundButton = document.getElementById('toggleSound');
-        if (mainSoundButton) {
-            soundEnabled = mainSoundButton.classList.contains('sound-on');
-            
-            // Observe changes on the main sound button
-            const observer = new MutationObserver(function(mutations) {
-                mutations.forEach(function(mutation) {
-                    if (mutation.attributeName === 'class') {
-                        soundEnabled = mainSoundButton.classList.contains('sound-on');
-                    }
-                });
-            });
-            
-            observer.observe(mainSoundButton, { attributes: true });
-        }
         
         // Prepare text elements for glitch effect
         prepareGlitchText();
@@ -126,13 +107,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Set initial intensity to 100%
         document.documentElement.style.setProperty('--glitch-opacity', '1');
         
-        // Play glitch sound if sound is enabled
-        if (soundEnabled && glitchSound) {
-            glitchSound.currentTime = 0;
-            glitchSound.volume = 0.3; // Reduce volume to avoid being too intrusive
-            glitchSound.play().catch(err => console.error('Error playing sound:', err));
-        }
-        
         // Add random glitch effects
         startRandomGlitches(1);
         
@@ -186,12 +160,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Reset intensity to 100%
         document.documentElement.style.setProperty('--glitch-opacity', '1');
-        
-        // Play glitch sound
-        if (soundEnabled && glitchSound) {
-            glitchSound.currentTime = 0;
-            glitchSound.play().catch(err => console.error('Error playing sound:', err));
-        }
         
         // Add random glitch effects
         startRandomGlitches(1);
@@ -273,4 +241,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const nextGlitchTime = (2000 + Math.random() * 5000) * (1 / adjustedIntensity);
         glitchTimeout = setTimeout(() => startRandomGlitches(intensity), nextGlitchTime);
     }
+    
+    // Expose toggleGlitch function globally
+    window.toggleGlitch = toggleGlitch;
 }); 

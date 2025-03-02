@@ -5,12 +5,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const hackerTerminal = document.getElementById('hackerTerminal');
     const terminalInput = document.getElementById('terminalInput');
     const terminalOutput = document.getElementById('terminalOutput');
-    const terminalSound = document.getElementById('terminalSound');
-    const terminalErrorSound = document.getElementById('terminalErrorSound');
-    const terminalSuccessSound = document.getElementById('terminalSuccessSound');
     
     // Variables
-    let soundEnabled = false; // Will be synchronized with the main sound button
     let commandHistory = [];
     let historyIndex = -1;
     let terminalActive = false;
@@ -30,23 +26,6 @@ document.addEventListener('DOMContentLoaded', function() {
         closeTerminalBtn.addEventListener('click', closeTerminal);
         terminalInput.addEventListener('keydown', handleTerminalInput);
         
-        // Synchronize sound state with main button
-        const mainSoundButton = document.getElementById('toggleSound');
-        if (mainSoundButton) {
-            soundEnabled = mainSoundButton.classList.contains('sound-on');
-            
-            // Observe changes on the main sound button
-            const observer = new MutationObserver(function(mutations) {
-                mutations.forEach(function(mutation) {
-                    if (mutation.attributeName === 'class') {
-                        soundEnabled = mainSoundButton.classList.contains('sound-on');
-                    }
-                });
-            });
-            
-            observer.observe(mainSoundButton, { attributes: true });
-        }
-        
         // Add MutationObserver to automatically scroll when terminal content changes
         const terminalObserver = new MutationObserver(function(mutations) {
             scrollToBottom();
@@ -61,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to toggle terminal
     function toggleTerminal() {
-        if (terminalActive) {
+        if (hackerTerminal.classList.contains('active')) {
             closeTerminal();
         } else {
             openTerminal();
@@ -73,30 +52,22 @@ document.addEventListener('DOMContentLoaded', function() {
         hackerTerminal.classList.add('active');
         toggleTerminalBtn.classList.add('active');
         terminalActive = true;
-        terminalInput.focus();
         
-        // Display welcome message
-        if (terminalOutput.children.length === 0) {
-            displayWelcomeMessage();
-        }
-        
-        // Ensure terminal is scrolled to bottom when opened
-        initTerminalScroll();
+        // Focus on input
+        setTimeout(() => {
+            terminalInput.focus();
+            
+            // Display welcome message if terminal is empty
+            if (terminalOutput.childNodes.length === 0) {
+                displayWelcomeMessage();
+            }
+            
+            initTerminalScroll();
+        }, 300);
     }
     
     // Function to initialize terminal scroll behavior
     function initTerminalScroll() {
-        // Force scroll to bottom
-        scrollToBottom();
-        
-        // Add a click event to the terminal to focus the input
-        hackerTerminal.addEventListener('click', function(e) {
-            // Only focus if not clicking on a button or input
-            if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') {
-                terminalInput.focus();
-            }
-        });
-        
         // Ensure terminal is scrollable
         terminalOutput.style.overflowY = 'auto';
         
@@ -113,13 +84,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to handle terminal inputs
     function handleTerminalInput(e) {
-        // Play typing sound
-        if (soundEnabled && terminalSound) {
-            const soundClone = terminalSound.cloneNode();
-            soundClone.volume = 0.3;
-            soundClone.play().catch(err => console.error('Error playing sound:', err));
-        }
-        
         // Handle special keys
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -225,12 +189,14 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'whoami':
                 displayWhoami();
                 break;
+            case 'glitch':
+                toggleGlitchEffect();
+                break;
             case 'exit':
                 closeTerminal();
                 break;
             default:
                 displayError(`Command not recognized: ${mainCommand}. Type 'help' to see available commands.`);
-                playErrorSound();
         }
     }
     
@@ -268,9 +234,6 @@ document.addEventListener('DOMContentLoaded', function() {
         displayInfo('Welcome to GhostSolution Terminal v1.0');
         displayInfo('Type "help" to see available commands.');
         
-        // Play success sound
-        playSuccessSound();
-        
         // Scroll to bottom
         scrollToBottom();
     }
@@ -288,6 +251,7 @@ document.addEventListener('DOMContentLoaded', function() {
             { command: 'ls / dir', description: 'List files' },
             { command: 'cat <file>', description: 'Display file content' },
             { command: 'whoami', description: 'Display current user' },
+            { command: 'glitch', description: 'Toggle glitch effect on/off' },
             { command: 'exit', description: 'Close the terminal' }
         ];
         
@@ -325,13 +289,11 @@ document.addEventListener('DOMContentLoaded', function() {
         helpElement.appendChild(commandTable);
         terminalOutput.appendChild(helpElement);
         
-        playSuccessSound();
         scrollToBottom();
     }
     
     function clearTerminal() {
         terminalOutput.innerHTML = '';
-        playSuccessSound();
     }
     
     function displayAbout() {
@@ -346,7 +308,6 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         terminalOutput.appendChild(aboutElement);
-        playSuccessSound();
         scrollToBottom();
     }
     
@@ -362,7 +323,6 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         terminalOutput.appendChild(servicesElement);
-        playSuccessSound();
         scrollToBottom();
     }
     
@@ -378,14 +338,12 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         terminalOutput.appendChild(contactElement);
-        playSuccessSound();
         scrollToBottom();
     }
     
     function simulateHack(target) {
         if (!target) {
             displayError('Please specify a target to hack. Example: hack website');
-            playErrorSound();
             scrollToBottom();
             return;
         }
@@ -436,7 +394,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p>Try with: website, database, or network</p>
                 `;
                 terminalOutput.appendChild(hackElement);
-                playErrorSound();
                 scrollToBottom();
                 return;
         }
@@ -462,7 +419,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 completionElement.innerHTML = `<span class="success">${targetName} hack completed successfully!</span>`;
                 element.appendChild(completionElement);
                 scrollToBottom();
-                playSuccessSound();
             }
         }, 500);
     }
@@ -524,13 +480,11 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         
         draw();
-        playSuccessSound();
     }
     
     function simulateScan(target) {
         if (!target) {
             displayError('Please specify a target to scan. Example: scan website');
-            playErrorSound();
             scrollToBottom();
             return;
         }
@@ -596,7 +550,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p>Try with: website, network, or system</p>
                 `;
                 terminalOutput.appendChild(scanElement);
-                playErrorSound();
                 scrollToBottom();
                 return;
         }
@@ -639,7 +592,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 element.appendChild(recommendationElement);
                 
                 scrollToBottom();
-                playSuccessSound();
             }
         }, 500);
     }
@@ -660,7 +612,6 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         terminalOutput.appendChild(dirElement);
-        playSuccessSound();
         scrollToBottom();
     }
     
@@ -696,20 +647,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 fileElement.innerHTML = `
                     <p><span class="error">Access denied: You don't have the necessary permissions to read this file.</span></p>
                 `;
-                playErrorSound();
                 break;
             default:
                 fileElement.innerHTML = `
                     <p><span class="error">Error: File '${filename}' does not exist.</span></p>
                 `;
-                playErrorSound();
                 break;
         }
         
         terminalOutput.appendChild(fileElement);
-        if (filename.toLowerCase() !== 'secret.txt' && ['about.txt', 'services.txt', 'contact.txt'].includes(filename.toLowerCase())) {
-            playSuccessSound();
-        }
         scrollToBottom();
     }
     
@@ -724,7 +670,6 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         terminalOutput.appendChild(whoamiElement);
-        playSuccessSound();
         scrollToBottom();
     }
     
@@ -753,17 +698,41 @@ document.addEventListener('DOMContentLoaded', function() {
         scrollToBottom();
     }
     
-    function playErrorSound() {
-        if (soundEnabled && terminalErrorSound) {
-            terminalErrorSound.currentTime = 0;
-            terminalErrorSound.play().catch(err => console.error('Error playing sound:', err));
+    // Function to toggle glitch effect
+    function toggleGlitchEffect() {
+        // Get the toggleGlitch button from the DOM
+        const toggleGlitchBtn = document.getElementById('toggleGlitch');
+        
+        if (!toggleGlitchBtn) {
+            displayError('Glitch effect control not available.');
+            return;
         }
-    }
-    
-    function playSuccessSound() {
-        if (soundEnabled && terminalSuccessSound) {
-            terminalSuccessSound.currentTime = 0;
-            terminalSuccessSound.play().catch(err => console.error('Error playing sound:', err));
+        
+        // Check if window.toggleGlitch function exists (from glitch.js)
+        if (typeof window.toggleGlitch === 'function') {
+            // Call the global toggleGlitch function
+            window.toggleGlitch();
+            
+            // Check if glitch is active by looking at the button class
+            const isGlitchActive = toggleGlitchBtn.classList.contains('active');
+            
+            if (isGlitchActive) {
+                displayInfo('Glitch effect activated.');
+            } else {
+                displayInfo('Glitch effect deactivated.');
+            }
+        } else {
+            // Simulate a click on the toggleGlitch button
+            toggleGlitchBtn.click();
+            
+            // Check if glitch is active by looking at the button class
+            const isGlitchActive = toggleGlitchBtn.classList.contains('active');
+            
+            if (isGlitchActive) {
+                displayInfo('Glitch effect activated.');
+            } else {
+                displayInfo('Glitch effect deactivated.');
+            }
         }
     }
 }); 

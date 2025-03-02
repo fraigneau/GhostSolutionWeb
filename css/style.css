@@ -43,6 +43,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    cursor: default;
 }
 
 body {
@@ -154,33 +155,6 @@ input, select, textarea, button {
     .container {
         padding: 0 15px;
     }
-}
-
-/* Custom cursor styles */
-.cursor-follower {
-    position: fixed;
-    width: 40px;
-    height: 40px;
-    background-color: rgba(77, 132, 255, 0.95);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    mix-blend-mode: difference;
-    transform: translate(-50%, -50%);
-    transition: transform 0.1s ease, background-color 0.3s ease;
-    will-change: transform;
-    box-shadow: 0 0 30px rgba(0, 200, 255, 0.9);
-    display: none; /* Hidden by default, enabled via JS for desktop only */
-}
-
-/* Ensure the cursor is hidden on the entire body when active */
-body.custom-cursor-active {
-    cursor: none !important;
-}
-
-/* Ensure all elements have cursor: none when custom cursor is active */
-.custom-cursor-active * {
-    cursor: none !important;
 }
 
 /* Header */
@@ -1929,4 +1903,13 @@ footer {
     100% {
         transform: translate(1px, -1px);
     }
+}
+
+/* Ensure all elements have normal cursor */
+* {
+    cursor: default;
+}
+
+a, button, input[type="submit"], .cta-button, .service-link, .work-link, .social-link {
+    cursor: pointer;
 } 

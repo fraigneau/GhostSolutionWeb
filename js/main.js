@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const header = document.querySelector('header');
     const navMenu = document.getElementById('navMenu');
     const workCard = document.querySelector('.work-card');
-    const cursorFollower = document.querySelector('.cursor-follower');
     
     // Check critical elements
     console.log('DOM elements found:', {
@@ -39,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialization
     try {
-        initCursorFollower();
+        // Custom cursor removed
         initSoundControl();
         initNavLinks();
         initServiceCards();
@@ -51,65 +50,6 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Initialization completed successfully');
     } catch (error) {
         console.error('Error during initialization:', error);
-    }
-
-    // Function to initialize custom cursor (desktop only)
-    function initCursorFollower() {
-        if (!cursorFollower) return;
-        
-        // Only enable custom cursor on desktop
-        if (window.innerWidth > 768) {
-            // Update cursor position on mousemove
-            document.addEventListener('mousemove', function(e) {
-                requestAnimationFrame(function() {
-                    cursorFollower.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-                });
-            });
-
-            // Click effect
-            document.addEventListener('mousedown', function(e) {
-                cursorFollower.style.transform = `translate(${e.clientX}px, ${e.clientY}px) scale(0.7)`;
-                
-                if (soundEnabled) {
-                    playSound(clickSound);
-                }
-            });
-            
-            document.addEventListener('mouseup', function(e) {
-                cursorFollower.style.transform = `translate(${e.clientX}px, ${e.clientY}px) scale(1)`;
-            });
-
-            // Hover effect on interactive elements
-            const interactiveElements = document.querySelectorAll('a, button, input, textarea, select, .service-card, .social-link, [role="button"], .work-card');
-            interactiveElements.forEach(element => {
-                element.addEventListener('mouseenter', function(e) {
-                    cursorFollower.style.backgroundColor = 'rgba(77, 132, 255, 0.8)';
-                    cursorFollower.style.transform = `translate(${e.clientX}px, ${e.clientY}px) scale(1.5)`;
-                    cursorFollower.style.mixBlendMode = 'normal';
-                    
-                    if (soundEnabled) {
-                        playSound(hoverSound);
-                    }
-                });
-                
-                element.addEventListener('mouseleave', function(e) {
-                    cursorFollower.style.backgroundColor = 'rgba(0, 200, 255, 0.8)';
-                    cursorFollower.style.transform = `translate(${e.clientX}px, ${e.clientY}px) scale(1)`;
-                    cursorFollower.style.mixBlendMode = 'difference';
-                });
-            });
-        } else {
-            // Disable custom cursor on mobile
-            cursorFollower.style.display = 'none';
-            document.body.style.cursor = 'auto';
-            document.body.classList.remove('custom-cursor-active');
-            
-            // Remove cursor style sheet if it exists
-            const cursorStyle = document.getElementById('cursor-style');
-            if (cursorStyle) {
-                cursorStyle.remove();
-            }
-        }
     }
 
     // Function to initialize sound control
@@ -498,42 +438,4 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
-    // Handle window resize
-    window.addEventListener('resize', function() {
-        // Toggle custom cursor based on screen size
-        if (!cursorFollower) return;
-        
-        if (window.innerWidth <= 768) {
-            cursorFollower.style.display = 'none';
-            document.body.style.cursor = 'auto';
-            document.body.classList.remove('custom-cursor-active');
-            
-            // Remove cursor style sheet if it exists
-            const cursorStyle = document.getElementById('cursor-style');
-            if (cursorStyle) {
-                cursorStyle.remove();
-            }
-        } else {
-            // Recreate cursor style sheet
-            let cursorStyle = document.getElementById('cursor-style');
-            if (!cursorStyle) {
-                cursorStyle = document.createElement('style');
-                cursorStyle.id = 'cursor-style';
-                cursorStyle.textContent = `
-                    body, a, button, input, textarea, select, label, .service-card, .social-link, [role="button"], .work-card {
-                        cursor: none !important;
-                    }
-                    .cursor-follower {
-                        display: block !important;
-                    }
-                `;
-                document.head.appendChild(cursorStyle);
-            }
-            
-            // Activate custom cursor
-            cursorFollower.style.display = 'block';
-            document.body.classList.add('custom-cursor-active');
-        }
-    });
 }); 
