@@ -200,6 +200,9 @@ document.addEventListener("DOMContentLoaded", function () {
       case "glitch":
         toggleGlitchEffect();
         break;
+      case "bigard":
+        displayBigard();
+        break;
       case "exit":
         closeTerminal();
         break;
@@ -226,6 +229,7 @@ document.addEventListener("DOMContentLoaded", function () {
       "dir",
       "cat",
       "whoami",
+      "bigard",
       "exit",
     ];
 
@@ -273,6 +277,10 @@ document.addEventListener("DOMContentLoaded", function () {
       { command: "cat <file>", description: "Display file content" },
       { command: "whoami", description: "Display current user" },
       { command: "glitch", description: "Toggle glitch effect on/off" },
+      {
+        command: "bigard",
+        description: "Easter egg: Lance une vidéo de Bigard",
+      },
       { command: "exit", description: "Close the terminal" },
     ];
 
@@ -783,5 +791,79 @@ document.addEventListener("DOMContentLoaded", function () {
         displayInfo("Glitch effect deactivated.");
       }
     }
+  }
+
+  // Function to display Bigard easter egg
+  function displayBigard() {
+    const bigardElement = document.createElement("div");
+    bigardElement.classList.add("result");
+
+    // Message d'introduction
+    const introElement = document.createElement("p");
+    introElement.innerHTML =
+      '<span class="info">🎭 Easter Egg activé : Jean-Marie Bigard arrive ! 🎭</span>';
+    bigardElement.appendChild(introElement);
+
+    // Ajouter un message de chargement
+    const loadingElement = document.createElement("p");
+    loadingElement.textContent = "Chargement du spectacle...";
+    bigardElement.appendChild(loadingElement);
+
+    terminalOutput.appendChild(bigardElement);
+    scrollToBottom();
+
+    // Simuler un chargement
+    setTimeout(() => {
+      // Supprimer le message de chargement
+      bigardElement.removeChild(loadingElement);
+
+      // Créer un conteneur pour la vidéo
+      const videoContainer = document.createElement("div");
+      videoContainer.style.margin = "15px 0";
+      videoContainer.style.maxWidth = "100%";
+
+      // Liste d'IDs de vidéos YouTube de Bigard
+      const bigardVideos = [
+        // https://www.youtube.com/watch?v=dXAd5H8DNKw
+        "k00DReMKuzo", // Bigard - Spiderman SALOPES
+        "L1UeinGeO44", // Bigard - Le lâcher de Salopes
+        "LtnuVxjwoek", // Bigard - 3 nains ou du routier
+      ];
+
+      // Choisir une vidéo au hasard
+      const randomVideoId =
+        bigardVideos[Math.floor(Math.random() * bigardVideos.length)];
+
+      // Créer l'élément iframe pour la vidéo YouTube
+      const videoIframe = document.createElement("iframe");
+      videoIframe.width = "560";
+      videoIframe.height = "315";
+      videoIframe.style.maxWidth = "100%";
+      videoIframe.src = `https://www.youtube.com/embed/${randomVideoId}?autoplay=1`;
+      videoIframe.title = "Jean-Marie Bigard";
+      videoIframe.frameBorder = "0";
+      videoIframe.allow =
+        "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+      videoIframe.allowFullscreen = true;
+
+      videoContainer.appendChild(videoIframe);
+      bigardElement.appendChild(videoContainer);
+
+      // Ajouter une citation aléatoire
+      const quotes = [
+        "Lâchez-vous, c'est un ordre !",
+        "Je ne suis pas vulgaire, je suis populaire !",
+        "Si tu veux faire rire Dieu, raconte-lui tes projets !",
+        "La vie c'est comme une boîte de chocolats, on commence par les meilleurs et on finit par les pralinés parce que personne n'en veut !",
+      ];
+
+      const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+
+      const quoteElement = document.createElement("p");
+      quoteElement.innerHTML = `<span class="success">"${randomQuote}" - Jean-Marie Bigard</span>`;
+      bigardElement.appendChild(quoteElement);
+
+      scrollToBottom();
+    }, 1500);
   }
 });
