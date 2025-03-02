@@ -1,7 +1,3 @@
-// Use global configuration
-// Import configuration
-// import config from './config.js';
-
 // Wait for DOM to be loaded
 document.addEventListener('DOMContentLoaded', function() {
     // Use global configuration
@@ -40,7 +36,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialization
     try {
-        // Custom cursor removed
         checkSections();
         initSoundControl();
         initNavLinks();
@@ -55,21 +50,6 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Initialization completed successfully');
     } catch (error) {
         console.error('Error during initialization:', error);
-    }
-
-    // Function to check if all sections exist
-    function checkSections() {
-        console.log('Checking sections...');
-        const sections = ['accueil', 'services', 'expertise', 'contact'];
-        
-        sections.forEach(sectionId => {
-            const section = document.getElementById(sectionId);
-            if (section) {
-                console.log(`Section #${sectionId} found`);
-            } else {
-                console.error(`Section #${sectionId} NOT FOUND`);
-            }
-        });
     }
 
     // Function to initialize sound control
