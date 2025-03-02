@@ -46,6 +46,10 @@
     cursor: default;
 }
 
+a, button, input[type="submit"], .cta-button, .service-link, .work-link, .social-link, .nav-link, .logo {
+    cursor: pointer !important;
+}
+
 body {
     font-family: 'Inter', sans-serif;
     background-color: var(--bg-color);
@@ -194,6 +198,7 @@ header.scrolled {
     display: flex;
     align-items: center;
     gap: 10px;
+    cursor: pointer;
 }
 
 @media (max-width: 480px) {
@@ -241,6 +246,7 @@ nav a {
     transition: color 0.3s ease;
     position: relative;
     padding: 0.5rem 0;
+    cursor: pointer;
 }
 
 nav a:hover {
@@ -1889,13 +1895,13 @@ footer {
 
 @keyframes glitch-shake {
     0% {
-        transform: translate(0);
-    }
-    25% {
         transform: translate(1px, 1px);
     }
-    50% {
+    25% {
         transform: translate(-1px, -1px);
+    }
+    50% {
+        transform: translate(1px, -1px);
     }
     75% {
         transform: translate(-1px, 1px);
@@ -1903,13 +1909,4 @@ footer {
     100% {
         transform: translate(1px, -1px);
     }
-}
-
-/* Ensure all elements have normal cursor */
-* {
-    cursor: default;
-}
-
-a, button, input[type="submit"], .cta-button, .service-link, .work-link, .social-link {
-    cursor: pointer;
 } 

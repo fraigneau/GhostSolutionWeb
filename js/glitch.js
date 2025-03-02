@@ -13,6 +13,11 @@ document.addEventListener('DOMContentLoaded', function() {
     let noScrollTimer = true; // Timer for auto-disabling glitch after no scroll
     let autoDisableDelay = 5000; // 5 seconds in milliseconds
     
+    // Check if current page is a legal page
+    const isLegalPage = window.location.pathname.includes('terms-of-service.html') || 
+                        window.location.pathname.includes('privacy-policy.html') || 
+                        window.location.pathname.includes('cookie-policy.html');
+    
     // Check if elements exist
     if (!toggleGlitchBtn) {
         console.error('Glitch button element not found');
@@ -32,15 +37,17 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add scroll event listener
         window.addEventListener('scroll', handleScroll);
         
-        // Activate glitch effect automatically after a short delay
-        setTimeout(() => {
-            enableAutoGlitch();
-        }, 1000);
+        // Activate glitch effect automatically after a short delay, but only if not on a legal page
+        if (!isLegalPage) {
+            setTimeout(() => {
+                enableAutoGlitch();
+            }, 1000);
+        }
     }
     
     // Function to handle scrolling and adjust glitch effect
     function handleScroll() {
-        if (!autoGlitchActive) return;
+        if (!autoGlitchActive || isLegalPage) return;
         
         const scrollPosition = window.scrollY;
         
@@ -101,6 +108,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to enable automatic glitch effect
     function enableAutoGlitch() {
+        // Don't enable on legal pages
+        if (isLegalPage) return;
+        
         autoGlitchActive = true;
         body.classList.add('glitch-active');
         
@@ -144,6 +154,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to toggle manual glitch effect
     function toggleGlitch() {
+        // Don't allow toggling on legal pages
+        if (isLegalPage) return;
+        
         if (glitchActive) {
             disableGlitch();
         } else {
@@ -153,6 +166,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to enable manual glitch effect
     function enableGlitch() {
+        // Don't enable on legal pages
+        if (isLegalPage) return;
+        
         glitchActive = true;
         autoGlitchActive = false; // Disable automatic effect
         toggleGlitchBtn.classList.add('active');
@@ -189,6 +205,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to prepare text elements for glitch effect
     function prepareGlitchText() {
+        // Don't prepare text on legal pages
+        if (isLegalPage) return;
+        
         // Select all important headings and text
         const glitchElements = [
             ...document.querySelectorAll('h1, h2, h3, .logo, .service-title, .work-title')
@@ -205,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to start random glitch effects with adjustable intensity
     function startRandomGlitches(intensity = 1) {
-        if (!autoGlitchActive && !glitchActive) return;
+        if ((!autoGlitchActive && !glitchActive) || isLegalPage) return;
         
         // Create a random glitch effect
         const randomGlitchEffect = Math.floor(Math.random() * 3);

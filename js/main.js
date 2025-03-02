@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const header = document.querySelector('header');
     const navMenu = document.getElementById('navMenu');
     const workCard = document.querySelector('.work-card');
+    const logo = document.querySelector('.logo');
     
     // Check critical elements
     console.log('DOM elements found:', {
@@ -30,7 +31,8 @@ document.addEventListener('DOMContentLoaded', function() {
         backgroundMusic: !!backgroundMusic,
         discoverBtn: !!discoverBtn,
         contactForm: !!contactForm,
-        navMenu: !!navMenu
+        navMenu: !!navMenu,
+        logo: !!logo
     });
 
     // Variables
@@ -39,17 +41,35 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialization
     try {
         // Custom cursor removed
+        checkSections();
         initSoundControl();
         initNavLinks();
+        initLogo();
         initServiceCards();
         initDiscoverButton();
         initContactForm();
         initScrollAnimations();
         initMatrixBackground();
         initHeaderScroll();
+        initAllSectionLinks();
         console.log('Initialization completed successfully');
     } catch (error) {
         console.error('Error during initialization:', error);
+    }
+
+    // Function to check if all sections exist
+    function checkSections() {
+        console.log('Checking sections...');
+        const sections = ['accueil', 'services', 'expertise', 'contact'];
+        
+        sections.forEach(sectionId => {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                console.log(`Section #${sectionId} found`);
+            } else {
+                console.error(`Section #${sectionId} NOT FOUND`);
+            }
+        });
     }
 
     // Function to initialize sound control
@@ -126,19 +146,62 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to initialize navigation links
     function initNavLinks() {
-        if (!navLinks.length) return;
+        if (!navLinks.length) {
+            console.error('Navigation links not found');
+            return;
+        }
+        
+        console.log('Initializing navigation links:', navLinks.length);
+        
+        // Log all navigation links for debugging
+        navLinks.forEach((link, index) => {
+            console.log(`Nav link ${index}:`, link.getAttribute('href'));
+        });
+        
+        // Ajouter des gestionnaires d'événements pour les liens du footer
+        document.querySelectorAll('.footer-links a').forEach(link => {
+            if (link.getAttribute('href').startsWith('#')) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    console.log('Footer link clicked:', targetId);
+                    
+                    const targetSection = document.querySelector(targetId);
+                    
+                    if (targetSection) {
+                        console.log('Scrolling to section:', targetId, 'at position:', targetSection.offsetTop);
+                        window.scrollTo({
+                            top: targetSection.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    } else {
+                        console.error('Target section not found:', targetId);
+                    }
+                });
+            }
+        });
         
         navLinks.forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 
                 const targetId = this.getAttribute('href');
+                console.log('Navigation clicked:', targetId);
+                
                 const targetSection = document.querySelector(targetId);
                 
                 if (targetSection) {
+                    console.log('Scrolling to section:', targetId, 'at position:', targetSection.offsetTop);
                     window.scrollTo({
                         top: targetSection.offsetTop - 80,
                         behavior: 'smooth'
+                    });
+                } else {
+                    console.error('Target section not found:', targetId);
+                    // Log all sections for debugging
+                    document.querySelectorAll('section').forEach(section => {
+                        console.log('Available section:', section.id);
                     });
                 }
             });
@@ -156,6 +219,31 @@ document.addEventListener('DOMContentLoaded', function() {
                     playSound(hoverSound);
                 }
             });
+            
+            // Ajouter des gestionnaires d'événements pour les liens de service
+            const serviceLink = card.querySelector('.service-link');
+            if (serviceLink) {
+                serviceLink.addEventListener('click', function(e) {
+                    if (this.getAttribute('href').startsWith('#')) {
+                        e.preventDefault();
+                        
+                        const targetId = this.getAttribute('href');
+                        console.log('Service link clicked:', targetId);
+                        
+                        const targetSection = document.querySelector(targetId);
+                        
+                        if (targetSection) {
+                            console.log('Scrolling to section:', targetId, 'at position:', targetSection.offsetTop);
+                            window.scrollTo({
+                                top: targetSection.offsetTop - 80,
+                                behavior: 'smooth'
+                            });
+                        } else {
+                            console.error('Target section not found:', targetId);
+                        }
+                    }
+                });
+            }
         });
     }
 
@@ -436,6 +524,64 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 header.classList.remove('scrolled');
             }
+        });
+    }
+
+    // Function to initialize logo
+    function initLogo() {
+        if (!logo) {
+            console.error('Logo not found');
+            return;
+        }
+        
+        logo.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+
+    // Function to initialize all section links
+    function initAllSectionLinks() {
+        // Sélectionner tous les liens qui pointent vers des sections
+        const allSectionLinks = document.querySelectorAll('a[href^="#"]');
+        console.log('Found section links:', allSectionLinks.length);
+        
+        allSectionLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                
+                // Ne pas traiter les liens déjà gérés par d'autres fonctions
+                if (this.classList.contains('nav-link') || 
+                    this.classList.contains('service-link') || 
+                    this.classList.contains('logo')) {
+                    return;
+                }
+                
+                console.log('Section link clicked:', targetId);
+                
+                if (targetId === '#') {
+                    e.preventDefault();
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                    return;
+                }
+                
+                const targetSection = document.querySelector(targetId);
+                
+                if (targetSection) {
+                    e.preventDefault();
+                    console.log('Scrolling to section:', targetId, 'at position:', targetSection.offsetTop);
+                    window.scrollTo({
+                        top: targetSection.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
         });
     }
 }); 

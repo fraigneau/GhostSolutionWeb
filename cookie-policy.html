@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="GhostSolution - Cookie Policy">
+    <meta name="theme-color" content="#0f1624">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Cookie Policy - GhostSolution</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+    <link rel="apple-touch-icon" href="img/favicon.svg">
+    <link rel="shortcut icon" href="img/favicon.svg">
+    <meta name="msapplication-TileImage" content="img/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        .legal-content {
+            padding: 120px 0 60px;
+            color: var(--text-color);
+        }
+
+        .legal-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .legal-title {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+        }
+
+        .legal-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--accent-color);
+        }
+
+        .legal-section {
+            margin-bottom: 40px;
+        }
+
+        .legal-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+        }
+
+        .legal-section h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+            color: var(--secondary-color);
+        }
+
+        .legal-section p,
+        .legal-section ul,
+        .legal-section ol {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .legal-section ul,
+        .legal-section ol {
+            padding-left: 20px;
+        }
+
+        .legal-section li {
+            margin-bottom: 10px;
+        }
+
+        .legal-date {
+            font-style: italic;
+            margin-bottom: 30px;
+            color: var(--text-muted);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 30px;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .back-link i {
+            margin-right: 8px;
+        }
+
+        .back-link:hover {
+            color: var(--secondary-color);
+            transform: translateX(-5px);
+        }
+
+        .no-cookies-icon {
+            font-size: 4rem;
+            color: var(--accent-color);
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        /* Style pour le bouton de retour principal */
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            border: 2px solid var(--accent-color);
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 100;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .home-button:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .home-button i {
+            font-size: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .legal-content {
+                padding: 100px 0 40px;
+            }
+
+            .legal-title {
+                font-size: 2rem;
+            }
+
+            .legal-section h2 {
+                font-size: 1.5rem;
+            }
+
+            .legal-section h3 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sound-control">
+        <button id="toggleSound" class="sound-button" aria-label="Enable/disable sound">
+            <i class="fas fa-volume-mute" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    <div class="terminal-control">
+        <button id="toggleTerminal" class="terminal-button" aria-label="Enable/disable terminal mode">
+            <i class="fas fa-terminal" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    <!-- Bouton de retour vers la page principale -->
+    <a href="index.html" class="home-button">
+        <i class="fas fa-home"></i> Home
+    </a>
+
+    <!-- Terminal hacker overlay -->
+    <div id="hackerTerminal" class="hacker-terminal">
+        <div class="terminal-header">
+            <div class="terminal-title">GhostSolution Terminal v1.0</div>
+            <button id="closeTerminal" class="terminal-close" aria-label="Close terminal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="terminal-content">
+            <div id="terminalOutput" class="terminal-output"></div>
+            <div class="terminal-input-line">
+                <span class="terminal-prompt">ghost@solution:~$</span>
+                <input type="text" id="terminalInput" class="terminal-input" autocomplete="off" spellcheck="false">
+            </div>
+        </div>
+        <div class="terminal-help">
+            <p>Type <span class="terminal-command">help</span> for available commands</p>
+        </div>
+    </div>
+
+    <main>
+        <section class="legal-content">
+            <div class="legal-container">
+                <h1 class="legal-title">Cookie Policy</h1>
+                <p class="legal-date">Last Updated: March 1, 2025</p>
+
+                <div class="no-cookies-icon">
+                    <i class="fas fa-cookie-bite"></i>
+                    <i class="fas fa-ban"
+                        style="position: relative; color: var(--danger-color); font-size: 2.5rem; margin-left: -2.5rem;"></i>
+                </div>
+
+                <div class="legal-section">
+                    <h2>1. Introduction</h2>
+                    <p>Welcome to GhostSolution's Cookie Policy page. We want to inform you that our website
+                        <strong>does not use cookies</strong> to collect or store personal information.
+                    </p>
+                </div>
+
+                <div class="legal-section">
+                    <h2>2. What Are Cookies?</h2>
+                    <p>Cookies are small text files that are stored on your device (computer, tablet, or mobile) when
+                        you visit a website. They are widely used to make websites work more efficiently and provide
+                        information to website owners.</p>
+                </div>
+
+                <div class="legal-section">
+                    <h2>Our Cookie-Free Approach</h2>
+                    <p>At GhostSolution, we have chosen not to use cookies or similar tracking technologies on our
+                        website. This means:</p>
+                    <ul>
+                        <li>We do not track your activity across our website or other websites</li>
+                        <li>We do not store information about your preferences or your device</li>
+                        <li>We do not use any tracking pixels, web beacons, local storage, or other similar technologies
+                            to collect information about you</li>
+                        <li>Your browsing experience on our site is completely private</li>
+                    </ul>
+                </div>
+
+                <div class="legal-section">
+                    <h2>4. Website Functionality</h2>
+                    <p>Our site is designed to function without the need for cookies. All features, including the
+                        interactive terminal and visual effects, are executed locally in your browser without storing
+                        persistent information.</p>
+                    <p>Preferences you set (such as enabling/disabling sound) are not saved between browsing sessions.
+                    </p>
+                </div>
+
+                <div class="legal-section">
+                    <h2>Changes to This Cookie Policy</h2>
+                    <p>We may update our Cookie Policy from time to time. If we make material changes, we will notify
+                        you by updating this page.</p>
+                    <p>We encourage you to periodically review this page to stay informed about our approach regarding
+                        cookies.</p>
+                    <p><strong>Last updated:</strong> May 15, 2025</p>
+                </div>
+
+                <div class="legal-section">
+                    <h2>6. Contact Us</h2>
+                    <p>If you have any questions about our cookie policy, please don't hesitate to contact us:</p>
+                    <p>Email: privacy@ghostsolution.com</p>
+                </div>
+
+                <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Home</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-about">
+                <a href="index.html" class="footer-logo">
+                    <i class="fas fa-shield-alt"></i> GhostSolution
+                </a>
+                <p>Providing professional cybersecurity services to protect your digital assets and ensure your business
+                    continuity.</p>
+                <div class="social-links">
+                    <a href="index.html" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="index.html" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="index.html" class="social-link"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+            <div class="footer-links-section">
+                <h3 class="footer-heading">Services</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html"><i class="fas fa-angle-right"></i> Advanced Security Audit</a>
+                    </li>
+                    <li><a href="index.html"><i class="fas fa-angle-right"></i> Digital Forensics</a></li>
+                    <li><a href="index.html"><i class="fas fa-angle-right"></i> Reverse Engineering</a></li>
+                    <li><a href="index.html"><i class="fas fa-angle-right"></i> Security Training</a></li>
+                </ul>
+            </div>
+            <div class="footer-links-section">
+                <h3 class="footer-heading">Legal</h3>
+                <ul class="footer-links">
+                    <li><a href="privacy-policy.html"><i class="fas fa-angle-right"></i> Privacy Policy</a></li>
+                    <li><a href="terms-of-service.html"><i class="fas fa-angle-right"></i> Terms of Service</a></li>
+                    <li><a href="cookie-policy.html"><i class="fas fa-angle-right"></i> Cookie Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 GhostSolution. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <audio id="backgroundMusic" loop>
+        <source src="audio/cyberpunk-ambient.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Hidden button for glitch functionality -->
+    <button id="toggleGlitch" style="display: none;" aria-hidden="true"></button>
+
+    <script src="js/main.js"></script>
+    <script src="js/terminal.js"></script>
+    <script src="js/glitch.js"></script>
+</body>
+
+</html>

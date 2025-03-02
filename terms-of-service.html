@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="GhostSolution - Terms of Service">
+    <meta name="theme-color" content="#0f1624">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Terms of Service - GhostSolution</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+    <link rel="apple-touch-icon" href="img/favicon.svg">
+    <link rel="shortcut icon" href="img/favicon.svg">
+    <meta name="msapplication-TileImage" content="img/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        .legal-content {
+            padding: 120px 0 60px;
+            color: var(--text-color);
+        }
+
+        .legal-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .legal-title {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+        }
+
+        .legal-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--accent-color);
+        }
+
+        .legal-section {
+            margin-bottom: 40px;
+        }
+
+        .legal-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+        }
+
+        .legal-section h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+            color: var(--secondary-color);
+        }
+
+        .legal-section p,
+        .legal-section ul,
+        .legal-section ol {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .legal-section ul,
+        .legal-section ol {
+            padding-left: 20px;
+        }
+
+        .legal-section li {
+            margin-bottom: 10px;
+        }
+
+        .legal-date {
+            font-style: italic;
+            margin-bottom: 30px;
+            color: var(--text-muted);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 30px;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .back-link i {
+            margin-right: 8px;
+        }
+
+        .back-link:hover {
+            color: var(--secondary-color);
+            transform: translateX(-5px);
+        }
+
+        /* Style pour le bouton de retour principal */
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            border: 2px solid var(--accent-color);
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 100;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .home-button:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .home-button i {
+            font-size: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .legal-content {
+                padding: 100px 0 40px;
+            }
+
+            .legal-title {
+                font-size: 2rem;
+            }
+
+            .legal-section h2 {
+                font-size: 1.5rem;
+            }
+
+            .legal-section h3 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sound-control">
+        <button id="toggleSound" class="sound-button" aria-label="Enable/disable sound">
+            <i class="fas fa-volume-mute" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    <div class="terminal-control">
+        <button id="toggleTerminal" class="terminal-button" aria-label="Enable/disable terminal mode">
+            <i class="fas fa-terminal" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    <!-- Bouton de retour vers la page principale -->
+    <a href="index.html" class="home-button">
+        <i class="fas fa-home"></i> Accueil
+    </a>
+
+    <!-- Terminal hacker overlay -->
+    <div id="hackerTerminal" class="hacker-terminal">
+        <div class="terminal-header">
+            <div class="terminal-title">GhostSolution Terminal v1.0</div>
+            <button id="closeTerminal" class="terminal-close" aria-label="Close terminal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="terminal-content">
+            <div id="terminalOutput" class="terminal-output"></div>
+            <div class="terminal-input-line">
+                <span class="terminal-prompt">ghost@solution:~$</span>
+                <input type="text" id="terminalInput" class="terminal-input" autocomplete="off" spellcheck="false">
+            </div>
+        </div>
+        <div class="terminal-help">
+            <p>Type <span class="terminal-command">help</span> for available commands</p>
+        </div>
+    </div>
+
+    <main>
+        <section class="legal-content">
+            <div class="legal-container">
+                <h1 class="legal-title">Terms of Service</h1>
+                <p class="legal-date">Last Updated: March 1, 2025</p>
+
+                <div class="legal-section">
+                    <h2>1. Introduction</h2>
+                    <p>These Terms of Service ("Terms") govern your use of GhostSolution's website, products, and
+                        services. By accessing or using our services, you agree to be bound by these Terms.</p>
+                    <p>Please read these Terms carefully before using our services. If you do not agree to these Terms,
+                        you must not access or use our services.</p>
+                    <p>These Terms should be read in conjunction with our <a href="privacy-policy.html">Privacy
+                            Policy</a>, which explains how we process your personal data in compliance with the General
+                        Data Protection Regulation (GDPR) and other applicable data protection laws.</p>
+                </div>
+
+                <div class="legal-section">
+                    <h2>2. Services Description</h2>
+                    <p>GhostSolution provides cybersecurity services including but not limited to security audits,
+                        digital forensics, and reverse engineering. Our Services are intended for professional use and
+                        are subject to change or termination at our discretion.</p>
+                </div>
+
+                <div class="legal-section">
+                    <h2>3. User Responsibilities</h2>
+                    <p>When using our services, you agree to:</p>
+                    <ul>
+                        <li>Provide accurate and complete information when registering for an account or using our
+                            services</li>
+                        <li>Maintain the security and confidentiality of your account credentials</li>
+                        <li>Use our services only for lawful purposes and in accordance with these Terms</li>
+                        <li>Not attempt to gain unauthorized access to any part of our services, other accounts, or
+                            computer systems</li>
+                        <li>Not interfere with or disrupt the integrity or performance of our services</li>
+                        <li>Respect the intellectual property rights of GhostSolution and third parties</li>
+                        <li>Comply with all applicable laws and regulations, including data protection laws when
+                            providing any personal data of third parties</li>
+                    </ul>
+                </div>
+
+                <div class="legal-section">
+                    <h2>4. Intellectual Property</h2>
+                    <p>All content, features, and functionality of our Services, including but not limited to text,
+                        graphics, logos, icons, images, audio clips, digital downloads, data compilations, and software,
+                        are the exclusive property of GhostSolution or its licensors and are protected by international
+                        copyright, trademark, patent, trade secret, and other intellectual property laws.</p>
+                    <p>You may not reproduce, distribute, modify, create derivative works of, publicly display, publicly
+                        perform, republish, download, store, or transmit any of the material on our Services without our
+                        prior written consent.</p>
+                </div>
+
+                <div class="legal-section">
+                    <h2>5. Limitation of Liability</h2>
+                    <p>In no event shall GhostSolution, its directors, employees, partners, agents, suppliers, or
+                        affiliates be liable for any indirect, incidental, special, consequential, or punitive damages,
+                        including without limitation, loss of profits, data, use, goodwill, or other intangible losses,
+                        resulting from:</p>
+                    <ul>
+                        <li>Your access to or use of or inability to access or use the Services</li>
+                        <li>Any conduct or content of any third party on the Services</li>
+                        <li>Any content obtained from the Services</li>
+                        <li>Unauthorized access, use, or alteration of your transmissions or content</li>
+                    </ul>
+                </div>
+
+                <div class="legal-section">
+                    <h2>6. Indemnification</h2>
+                    <p>You agree to defend, indemnify, and hold harmless GhostSolution, its affiliates, licensors, and
+                        service providers, and its and their respective officers, directors, employees, contractors,
+                        agents, licensors, suppliers, successors, and assigns from and against any claims, liabilities,
+                        damages, judgments, awards, losses, costs, expenses, or fees (including reasonable attorneys'
+                        fees) arising out of or relating to your violation of these Terms or your use of the Services.
+                    </p>
+                </div>
+
+                <div class="legal-section">
+                    <h2>7. Governing Law</h2>
+                    <p>These Terms shall be governed by and construed in accordance with the laws of France, without
+                        regard to its conflict of law provisions. Any legal suit, action, or proceeding arising out of,
+                        or related to, these Terms or the Services shall be instituted exclusively in the courts of
+                        France.</p>
+                </div>
+
+                <div class="legal-section">
+                    <h2>8. Changes to Terms</h2>
+                    <p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a
+                        revision is material, we will provide at least 30 days' notice prior to any new terms taking
+                        effect. What constitutes a material change will be determined at our sole discretion.</p>
+                </div>
+
+                <div class="legal-section">
+                    <h2>9. Contact Us</h2>
+                    <p>If you have any questions about these Terms, please contact us at:</p>
+                    <p>Email: legal@ghostsolution.com</p>
+                </div>
+
+                <div class="legal-section">
+                    <h2>10. Data Protection and Privacy</h2>
+                    <p>GhostSolution is committed to protecting your personal data in accordance with the General Data
+                        Protection Regulation (GDPR) and other applicable data protection laws.</p>
+                    <p>When you use our services:</p>
+                    <ul>
+                        <li>We process your personal data as described in our <a href="privacy-policy.html">Privacy
+                                Policy</a></li>
+                        <li>We implement appropriate technical and organizational measures to protect your personal data
+                        </li>
+                        <li>We only process your personal data for specified, explicit, and legitimate purposes</li>
+                        <li>We respect your data protection rights as outlined in our Privacy Policy</li>
+                    </ul>
+                    <p>If our services involve processing personal data on your behalf (for example, during security
+                        audits or digital forensics), we act as a data processor and you act as the data controller. In
+                        such cases, you are responsible for ensuring you have the legal right to share such data with
+                        us, and we will process it only according to your documented instructions and as necessary to
+                        provide the services.</p>
+                </div>
+
+                <div class="legal-section">
+                    <h2>11. Changes to Terms</h2>
+                    <p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a
+                        revision is material, we will provide at least 30 days' notice prior to any new terms taking
+                        effect. What constitutes a material change will be determined at our sole discretion.</p>
+                    <p>By continuing to access or use our services after those revisions become effective, you agree to
+                        be bound by the revised Terms. If you do not agree to the new Terms, you must stop using our
+                        services.</p>
+                    <p><strong>Last Updated:</strong> May 15, 2025</p>
+                </div>
+
+                <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Home</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-about">
+                <a href="index.html" class="footer-logo">
+                    <i class="fas fa-shield-alt"></i> GhostSolution
+                </a>
+                <p>Providing professional cybersecurity services to protect your digital assets and ensure your business
+                    continuity.</p>
+                <div class="social-links">
+                    <a href="index.html" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="index.html" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="index.html" class="social-link"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+            <div class="footer-links-section">
+                <h3 class="footer-heading">Services</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html"><i class="fas fa-angle-right"></i> Advanced Security Audit</a>
+                    </li>
+                    <li><a href="index.html"><i class="fas fa-angle-right"></i> Digital Forensics</a></li>
+                    <li><a href="index.html"><i class="fas fa-angle-right"></i> Reverse Engineering</a></li>
+                    <li><a href="index.html"><i class="fas fa-angle-right"></i> Security Training</a></li>
+                </ul>
+            </div>
+            <div class="footer-links-section">
+                <h3 class="footer-heading">Legal</h3>
+                <ul class="footer-links">
+                    <li><a href="privacy-policy.html"><i class="fas fa-angle-right"></i> Privacy Policy</a></li>
+                    <li><a href="terms-of-service.html"><i class="fas fa-angle-right"></i> Terms of Service</a></li>
+                    <li><a href="cookie-policy.html"><i class="fas fa-angle-right"></i> Cookie Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 GhostSolution. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <audio id="backgroundMusic" loop>
+        <source src="audio/cyberpunk-ambient.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Hidden button for glitch functionality -->
+    <button id="toggleGlitch" style="display: none;" aria-hidden="true"></button>
+
+    <script src="js/main.js"></script>
+    <script src="js/terminal.js"></script>
+    <script src="js/glitch.js"></script>
+</body>
+
+</html>

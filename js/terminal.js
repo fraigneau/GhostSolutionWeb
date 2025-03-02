@@ -700,6 +700,17 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to toggle glitch effect
     function toggleGlitchEffect() {
+        // Check if current page is a legal page
+        const isLegalPage = window.location.pathname.includes('terms-of-service.html') || 
+                            window.location.pathname.includes('privacy-policy.html') || 
+                            window.location.pathname.includes('cookie-policy.html');
+        
+        // Don't allow glitch effect on legal pages
+        if (isLegalPage) {
+            displayError('Glitch effect is disabled on legal pages.');
+            return;
+        }
+        
         // Get the toggleGlitch button from the DOM
         const toggleGlitchBtn = document.getElementById('toggleGlitch');
         

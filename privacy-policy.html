@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="GhostSolution - Privacy Policy">
+    <meta name="theme-color" content="#0f1624">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Privacy Policy - GhostSolution</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+    <link rel="apple-touch-icon" href="img/favicon.svg">
+    <link rel="shortcut icon" href="img/favicon.svg">
+    <meta name="msapplication-TileImage" content="img/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        .legal-content {
+            padding: 120px 0 60px;
+            color: var(--text-color);
+        }
+
+        .legal-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .legal-title {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+        }
+
+        .legal-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--accent-color);
+        }
+
+        .legal-section {
+            margin-bottom: 40px;
+        }
+
+        .legal-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+        }
+
+        .legal-section h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+            color: var(--secondary-color);
+        }
+
+        .legal-section p,
+        .legal-section ul,
+        .legal-section ol {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .legal-section ul,
+        .legal-section ol {
+            padding-left: 20px;
+        }
+
+        .legal-section li {
+            margin-bottom: 10px;
+        }
+
+        .legal-date {
+            font-style: italic;
+            margin-bottom: 30px;
+            color: var(--text-muted);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 30px;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .back-link i {
+            margin-right: 8px;
+        }
+
+        .back-link:hover {
+            color: var(--secondary-color);
+            transform: translateX(-5px);
+        }
+
+        /* Style pour le bouton de retour principal */
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            border: 2px solid var(--accent-color);
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 100;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .home-button:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .home-button i {
+            font-size: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .legal-content {
+                padding: 100px 0 40px;
+            }
+
+            .legal-title {
+                font-size: 2rem;
+            }
+
+            .legal-section h2 {
+                font-size: 1.5rem;
+            }
+
+            .legal-section h3 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sound-control">
+        <button id="toggleSound" class="sound-button" aria-label="Enable/disable sound">
+            <i class="fas fa-volume-mute" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    <div class="terminal-control">
+        <button id="toggleTerminal" class="terminal-button" aria-label="Enable/disable terminal mode">
+            <i class="fas fa-terminal" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    <!-- Bouton de retour vers la page principale -->
+    <a href="index.html" class="home-button">
+        <i class="fas fa-home"></i> Accueil
+    </a>
+
+    <!-- Terminal hacker overlay -->
+    <div id="hackerTerminal" class="hacker-terminal">
+        <div class="terminal-header">
+            <div class="terminal-title">GhostSolution Terminal v1.0</div>
+            <button id="closeTerminal" class="terminal-close" aria-label="Close terminal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="terminal-content">
+            <div id="terminalOutput" class="terminal-output"></div>
+            <div class="terminal-input-line">
+                <span class="terminal-prompt">ghost@solution:~$</span>
+                <input type="text" id="terminalInput" class="terminal-input" autocomplete="off" spellcheck="false">
+            </div>
+        </div>
+        <div class="terminal-help">
+            <p>Type <span class="terminal-command">help</span> for available commands</p>
+        </div>
+    </div>
+
+    <main>
+        <section class="legal-content">
+            <div class="legal-container">
+                <h1 class="legal-title">Privacy Policy</h1>
+                <p class="legal-date">Last Updated: May 15, 2025</p>
+
+                <div class="legal-section">
+                    <h2>1. Introduction</h2>
+                    <p>At GhostSolution, we respect your privacy and are committed to protecting your personal data.
+                        This Privacy Policy explains how we collect, use, disclose, and safeguard your information when
+                        you visit our website or use our services.</p>
+                    <p>Please read this Privacy Policy carefully. If you do not agree with the terms of this Privacy
+                        Policy, please do not access the site or use our services.</p>
+                </div>
+
+                <div class="legal-section">
+                    <h2>1. Information We Collect</h2>
+                    <p>We may collect the following types of information:</p>
+                    <h3>1.1 Personal Data</h3>
+                    <p>When you use our services, we may collect personal data such as:</p>
+                    <ul>
+                        <li>Name, email address, phone number, and other contact information</li>
+                        <li>Company name and job title</li>
+                        <li>Information provided in forms, surveys, or other interactions with our services</li>
+                        <li>Payment information (processed securely through our payment processors)</li>
+                    </ul>
+                    <h3>1.2 Technical Data</h3>
+                    <p>We may automatically collect certain technical data when you visit our website, such as:</p>
+                    <ul>
+                        <li>IP address</li>
+                        <li>Browser type and version</li>
+                        <li>Device information</li>
+                        <li>Pages visited and navigation patterns</li>
+                        <li>Time and date of visits</li>
+                    </ul>
+                </div>
+
+                <div class="legal-section">
+                    <h2>2. Legal Basis for Processing</h2>
+                    <p>We process your personal data on the following legal bases:</p>
+                    <ul>
+                        <li><strong>Contract:</strong> Processing necessary for the performance of a contract with you
+                            or to take steps at your request before entering into a contract (e.g., when providing our
+                            cybersecurity services)</li>
+                        <li><strong>Legitimate Interests:</strong> Processing necessary for our legitimate interests,
+                            provided these interests don't override your fundamental rights and freedoms (e.g.,
+                            improving our services, preventing fraud)</li>
+                        <li><strong>Legal Obligation:</strong> Processing necessary to comply with our legal obligations
+                            (e.g., responding to legal requests from authorities)</li>
+                        <li><strong>Consent:</strong> Processing based on your specific consent (e.g., for marketing
+                            communications, where applicable)</li>
+                    </ul>
+                </div>
+
+                <div class="legal-section">
+                    <h2>3. How We Use Your Information</h2>
+                    <p>We may use the information we collect for various purposes, including:</p>
+                    <ul>
+                        <li>Providing, maintaining, and improving our services</li>
+                        <li>Processing transactions and sending related information</li>
+                        <li>Responding to your comments, questions, and requests</li>
+                        <li>Sending technical notices, updates, security alerts, and support messages</li>
+                        <li>Monitoring and analyzing trends, usage, and activities in connection with our services</li>
+                        <li>Detecting, investigating, and preventing fraudulent transactions and other illegal
+                            activities</li>
+                        <li>Personalizing and improving your experience with our services</li>
+                    </ul>
+                </div>
+
+                <div class="legal-section">
+                    <h2>4. Data Security</h2>
+                    <p>We have implemented appropriate technical and organizational security measures designed to
+                        protect the security of any personal information we process. However, please also remember that
+                        we cannot guarantee that the internet itself is 100% secure. Although we will do our best to
+                        protect your personal information, transmission of personal information to and from our services
+                        is at your own risk.</p>
+                </div>
+
+                <div class="legal-section">
+                    <h2>5. Data Retention</h2>
+                    <p>We retain your personal data only for as long as necessary to fulfill the purposes for which it
+                        was collected, including for the purposes of satisfying any legal, accounting, or reporting
+                        requirements. Specific retention periods are as follows:</p>
+                    <ul>
+                        <li><strong>Account information:</strong> Retained for the duration of your relationship with us
+                            and for up to 3 years after your last interaction with our services</li>
+                        <li><strong>Transaction data:</strong> Retained for 10 years as required by tax and accounting
+                            regulations</li>
+                        <li><strong>Communication data:</strong> Retained for 3 years after your last communication with
+                            us</li>
+                        <li><strong>Technical data:</strong> Retained for 13 months in an anonymized form for analytical
+                            purposes</li>
+                    </ul>
+                    <p>When personal data is no longer needed, we will securely delete or anonymize it.</p>
+                </div>
+
+                <div class="legal-section">
+                    <h2>6. Your Data Protection Rights</h2>
+                    <p>Under the GDPR and other applicable data protection laws, you have certain rights regarding your
+                        personal data:</p>
+                    <ul>
+                        <li><strong>Right to Access:</strong> You can request a copy of the personal data we hold about
+                            you.</li>
+                        <li><strong>Right to Rectification:</strong> You can request that we correct inaccurate or
+                            incomplete data about you.</li>
+                        <li><strong>Right to Erasure:</strong> You can request that we delete your personal data in
+                            certain circumstances.</li>
+                        <li><strong>Right to Restrict Processing:</strong> You can request that we restrict the
+                            processing of your data in certain circumstances.</li>
+                        <li><strong>Right to Data Portability:</strong> You can request to receive your data in a
+                            structured, commonly used, and machine-readable format.</li>
+                        <li><strong>Right to Object:</strong> You can object to our processing of your personal data in
+                            certain circumstances.</li>
+                        <li><strong>Right to Withdraw Consent:</strong> Where processing is based on consent, you can
+                            withdraw your consent at any time.</li>
+                    </ul>
+                    <p>To exercise any of these rights, please contact us at privacy@ghostsolution.com.</p>
+                    <p>You also have the right to lodge a complaint with a supervisory authority. In France, this is the
+                        Commission Nationale de l'Informatique et des Libertés (CNIL), which can be contacted at <a
+                            href="https://www.cnil.fr" target="_blank">www.cnil.fr</a> or by postal mail at: CNIL, 3
+                        Place de Fontenoy, TSA 80715, 75334 PARIS CEDEX 07, France.</p>
+                </div>
+
+                <div class="legal-section">
+                    <h2>7. Cookies and Similar Technologies</h2>
+                    <p>GhostSolution does not use cookies or similar tracking technologies on our website. We respect
+                        your privacy and have chosen a cookie-free approach to our online presence. For more details,
+                        please see our <a href="cookie-policy.html">Cookie Policy</a>.</p>
+                </div>
+
+                <div class="legal-section">
+                    <h2>8. Third-Party Services</h2>
+                    <p>Our service may contain links to other sites that are not operated by us. If you click on a
+                        third-party link, you will be directed to that third party's site. We strongly advise you to
+                        review the Privacy Policy of every site you visit.</p>
+                    <p>We have no control over and assume no responsibility for the content, privacy policies or
+                        practices of any third-party sites or services.</p>
+                </div>
+
+                <div class="legal-section">
+                    <h2>9. International Data Transfers</h2>
+                    <p>GhostSolution primarily processes and stores data within the European Union. However, in some
+                        cases, your personal data may be transferred to, and processed in, countries outside the
+                        European Economic Area (EEA).</p>
+                    <p>When such transfers occur, we ensure appropriate safeguards are in place to protect your data,
+                        such as:</p>
+                    <ul>
+                        <li>Transferring to countries that have been deemed to provide an adequate level of protection
+                            by the European Commission</li>
+                        <li>Using specific contracts approved by the European Commission (Standard Contractual Clauses)
+                            that give personal data the same protection it has in Europe</li>
+                        <li>Implementing additional technical and organizational measures to protect your data</li>
+                    </ul>
+                </div>
+
+                <div class="legal-section">
+                    <h2>10. Changes to This Privacy Policy</h2>
+                    <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting
+                        the new Privacy Policy on this page and updating the "Last Updated" date.</p>
+                    <p>We encourage you to review this Privacy Policy periodically for any changes. Changes to this
+                        Privacy Policy are effective when they are posted on this page.</p>
+                    <p><strong>Last Updated:</strong> May 15, 2025</p>
+                </div>
+
+                <div class="legal-section">
+                    <h2>11. Contact Us</h2>
+                    <p>If you have any questions about this Privacy Policy, please contact us:</p>
+                    <p>Email: privacy@ghostsolution.com</p>
+                </div>
+
+                <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Home</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-about">
+                <a href="index.html" class="footer-logo">
+                    <i class="fas fa-shield-alt"></i> GhostSolution
+                </a>
+                <p>Providing professional cybersecurity services to protect your digital assets and ensure your business
+                    continuity.</p>
+                <div class="social-links">
+                    <a href="index.html" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="index.html" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="index.html" class="social-link"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+            <div class="footer-links-section">
+                <h3 class="footer-heading">Services</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html"><i class="fas fa-angle-right"></i> Advanced Security Audit</a>
+                    </li>
+                    <li><a href="index.html"><i class="fas fa-angle-right"></i> Digital Forensics</a></li>
+                    <li><a href="index.html"><i class="fas fa-angle-right"></i> Reverse Engineering</a></li>
+                    <li><a href="index.html"><i class="fas fa-angle-right"></i> Security Training</a></li>
+                </ul>
+            </div>
+            <div class="footer-links-section">
+                <h3 class="footer-heading">Legal</h3>
+                <ul class="footer-links">
+                    <li><a href="privacy-policy.html"><i class="fas fa-angle-right"></i> Privacy Policy</a></li>
+                    <li><a href="terms-of-service.html"><i class="fas fa-angle-right"></i> Terms of Service</a></li>
+                    <li><a href="cookie-policy.html"><i class="fas fa-angle-right"></i> Cookie Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 GhostSolution. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <audio id="backgroundMusic" loop>
+        <source src="audio/cyberpunk-ambient.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Hidden button for glitch functionality -->
+    <button id="toggleGlitch" style="display: none;" aria-hidden="true"></button>
+
+    <script src="js/main.js"></script>
+    <script src="js/terminal.js"></script>
+    <script src="js/glitch.js"></script>
+</body>
+
+</html>
