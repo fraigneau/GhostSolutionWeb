@@ -277,10 +277,6 @@ document.addEventListener("DOMContentLoaded", function () {
       { command: "cat <file>", description: "Display file content" },
       { command: "whoami", description: "Display current user" },
       { command: "glitch", description: "Toggle glitch effect on/off" },
-      {
-        command: "bigard",
-        description: "Easter egg: Lance une vidéo de Bigard",
-      },
       { command: "exit", description: "Close the terminal" },
     ];
 
